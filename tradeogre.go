@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"strconv"
 	"time"
@@ -10,8 +9,9 @@ import (
 var ARRR_RATES pirateRates
 
 type pirateRates struct {
-	Base  string `json:"base"`
-	Rates struct {
+	Base   string `json:"base"`
+	Market string `json:"market"`
+	Rates  struct {
 		AED float64 `json:"AED"`
 		AFN float64 `json:"AFN"`
 		ALL float64 `json:"ALL"`
@@ -198,6 +198,7 @@ func TOgreARRRAPI() {
 		var arrr pirateRates
 		arrrBTC, _ := strconv.ParseFloat(result.(map[string]interface{})["price"].(string), 64)
 		arrr.Base = "ARRR"
+		arrr.Market = "TradeOgre"
 		arrr.Rates.AED = toFixed(arrrBTC*BTC_RATES.Rates.AED, 6)
 		arrr.Rates.AFN = toFixed(arrrBTC*BTC_RATES.Rates.AFN, 6)
 		arrr.Rates.ALL = toFixed(arrrBTC*BTC_RATES.Rates.ALL, 6)
@@ -369,8 +370,8 @@ func TOgreARRRAPI() {
 
 		ARRR_RATES = arrr
 
-		b, _ := json.Marshal(arrr)
-		fmt.Println(string(b))
+		// b, _ := json.Marshal(arrr)
+		// fmt.Println(string(b))
 
 		sleepSeconds := 30
 		fmt.Printf("Updated Pirate Rates. Will update again in %v seconds...\n", sleepSeconds)

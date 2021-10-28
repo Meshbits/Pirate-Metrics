@@ -20,7 +20,7 @@ func APICall(q *APIQuery) (string, error) {
 	// url := "http://data.fixer.io/api/latest?access_key=YOUR_FIXER_API_KEY&format=1"
 	// url := "https://tradeogre.com/api/v1/ticker/BTC-ARRR"
 	url := q.Url + `?` + q.Params
-	fmt.Println(q.Url)
+	// fmt.Println(q.Url)
 	// fmt.Println(url)
 	method := "GET"
 
