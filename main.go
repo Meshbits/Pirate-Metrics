@@ -26,14 +26,18 @@ func main() {
 	}
 
 	go fixer(*fixerAPIToken)
+	go CGeckoBTCAPI()
+
 	go displayRates()
 
 	fmt.Scanln()
+
 }
 
 func displayRates() {
 	for {
-		fmt.Println(FIXER_RATES)
+		fmt.Printf("FIXER_RATES:\n %v\n", FIXER_RATES)
+		fmt.Printf("BTC_RATES:\n %v\n", BTC_RATES)
 
 		sleepSeconds := 10
 		fmt.Printf("Will Display Rates every other %v seconds...\n\n", sleepSeconds)

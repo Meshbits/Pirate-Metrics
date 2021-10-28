@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -21,6 +20,7 @@ func APICall(q *APIQuery) (string, error) {
 	// url := "https://tradeogre.com/api/v1/ticker/BTC-ARRR"
 	url := q.Url + `?` + q.Params
 	fmt.Println(q.Url)
+	// fmt.Println(url)
 	method := "GET"
 
 	client := &http.Client{
@@ -71,14 +71,14 @@ func RPCResultMap(url string, params interface{}) (interface{}, error) {
 	}
 	// fmt.Printf("%T\n", getJSON)
 
-	var result map[string]interface{}
+	var result interface{}
 	json.Unmarshal([]byte(getJSON), &result)
 	// fmt.Println("Error:", result["error"])
 	// fmt.Println("success:", result["success"])
-	if result["error"] != nil {
-		// fmt.Printf("error is not nil: %v\n", result["error"])
-		return nil, errors.New(result["error"].(string))
-	}
+	// if result.(map[string]interface{})["error"] != nil {
+	// 	// fmt.Printf("error is not nil: %v\n", result["error"])
+	// 	return nil, errors.New(result.(map[string]interface{})["error"].(string))
+	// }
 	return result, nil
 	// return "", nil
 }
