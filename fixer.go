@@ -187,7 +187,7 @@ type fixerRates struct {
 func fixer(APIToken string) /*(fixerRates, error)*/ {
 	// Forever loop to keep fetching rates every N seconds
 	for {
-		url := "http://data.fixer.io/api/latest"
+		url := "http://data.fixer.io/api/latest?"
 		params := `access_key=` + APIToken + `&format=1`
 		result, err := RPCResultMap(url, params)
 		if err != nil {
