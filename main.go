@@ -73,7 +73,7 @@ func displayRates() {
 		fmt.Printf("KC-ARRR/USDT: ARRR (USD): %v\n", ARRR_KC_RATES_USDT.Rates.USD)
 		fmt.Println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
-		sleepSeconds := 10
+		sleepSeconds := 900
 		fmt.Printf("Will Display Rates every other %v seconds...\n\n", sleepSeconds)
 		time.Sleep(time.Duration(sleepSeconds) * time.Second)
 	}
