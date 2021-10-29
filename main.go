@@ -33,7 +33,7 @@ func ArrrPrice(w http.ResponseWriter, r *http.Request) {
 }
 
 func indexPage(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, `For API documentation visit https://piratewallet.io`)
+	fmt.Fprintf(w, `<p>For API documentation visit <a href="https://piratewallet.io">piratewallet.io</a></p>`)
 }
 
 func main() {
