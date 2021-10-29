@@ -32,6 +32,10 @@ func ArrrPrice(w http.ResponseWriter, r *http.Request) {
 	w.Write(arrrPrice)
 }
 
+func indexPage(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, `For API documentation visit https://piratewallet.io`)
+}
+
 func main() {
 	fixerAPIToken := flag.String("fixerAPIToken", "", "Get the API token from https://fixer.io. API Token from a free sign-up is sufficient to use with this application.")
 	flag.Parse()
@@ -50,7 +54,8 @@ func main() {
 
 	r := mux.NewRouter()
 	// Routes consist of a path and a handler function.
-	r.HandleFunc("/{market}/{pair}", ArrrPrice).Methods("GET")
+	r.HandleFunc("/", indexPage)
+	r.HandleFunc("/v1/prices/{market}/{pair}", ArrrPrice).Methods("GET")
 
 	// Bind to a port and pass our router in
 	log.Fatal(http.ListenAndServe(":8000", r))
