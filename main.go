@@ -22,9 +22,9 @@ func ArrrPrice(w http.ResponseWriter, r *http.Request) {
 		arrrPrice, _ = json.Marshal(ARRR_TO_RATES)
 	case "kucoin":
 		switch strings.ToUpper(vars["pair"]) {
-		case "BTC":
+		case "ARRR-BTC":
 			arrrPrice, _ = json.Marshal(ARRR_KC_RATES_BTC)
-		case "USDT":
+		case "ARRR-USDT":
 			arrrPrice, _ = json.Marshal(ARRR_KC_RATES_USDT)
 		}
 	}
