@@ -1,4 +1,4 @@
-module pirate-prices
+module pirate-metrics
 
 go 1.17
 
