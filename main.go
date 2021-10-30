@@ -49,31 +49,31 @@ func PriceAPI(w http.ResponseWriter, r *http.Request) {
 	case "kucoin":
 		switch strings.ToUpper(vars["pair"]) {
 		case "ARRR-BTC":
-			_convRates = ARRR_KC_RATES_BTC
+			_convRates = ARRR_BTC_KC_RATES
 		case "ARRR-USDT":
-			_convRates = ARRR_KC_RATES_USDT
+			_convRates = ARRR_USDT_KC_RATES
 		default:
 			w.Header().Set("Content-Type", "application/json")
 			fmt.Fprintf(w, `{"success": false,"error": "Pair not found. Please try another pair"}`)
 			return
 		}
 	case "binance":
-		fmt.Println("Binance selected", vars["market"])
-		if strings.ToLower(BTC_PRICE_SOURCE) != strings.ToLower(vars["market"]) {
-			w.Header().Set("Content-Type", "application/json")
-			fmt.Fprintf(w, `{"success": false,"error": "This market not enabled. Please try another market"}`)
-			return
-		}
 		switch strings.ToUpper(vars["pair"]) {
 		case "BTC-USDT":
-			_convRates = BTC_BINANCE_RATES_USDT
+			if strings.ToLower(BTC_PRICE_SOURCE) != strings.ToLower(vars["market"]) {
+				w.Header().Set("Content-Type", "application/json")
+				fmt.Fprintf(w, `{"success": false,"error": "This market not enabled. Please try another market"}`)
+				return
+			}
+			_convRates = BTC_USDT_BINANCE_RATES
+		case "KMD-BTC":
+			_convRates = KMD_BTC_BINANCE_RATES
 		default:
 			w.Header().Set("Content-Type", "application/json")
 			fmt.Fprintf(w, `{"success": false,"error": "Pair not found. Please try another pair"}`)
 			return
 		}
 	case "coingecko":
-		fmt.Println("CoinGecko selected", vars["market"])
 		if strings.ToLower(BTC_PRICE_SOURCE) != strings.ToLower(vars["market"]) {
 			w.Header().Set("Content-Type", "application/json")
 			fmt.Fprintf(w, `{"success": false,"error": "This market not enabled. Please try another market"}`)
@@ -82,6 +82,15 @@ func PriceAPI(w http.ResponseWriter, r *http.Request) {
 		switch strings.ToUpper(vars["pair"]) {
 		case "BTC-USD":
 			_convRates = BTC_COINGECKO_RATES
+		default:
+			w.Header().Set("Content-Type", "application/json")
+			fmt.Fprintf(w, `{"success": false,"error": "Pair not found. Please try another pair"}`)
+			return
+		}
+	case "safetrade":
+		switch strings.ToUpper(vars["pair"]) {
+		case "VRSC-BTC":
+			_convRates = VRSC_BTC_SAFETRADE_RATES
 		default:
 			w.Header().Set("Content-Type", "application/json")
 			fmt.Fprintf(w, `{"success": false,"error": "Pair not found. Please try another pair"}`)
@@ -158,6 +167,8 @@ func main() {
 	go ArrrToAPI()
 	go ArrrBtcKcAPI()
 	go ArrrUsdtKcAPI()
+	go KmdBtcBinanceAPI()
+	go VrscBtcSafeTradeAPI()
 
 	go displayRates()
 
@@ -180,14 +191,18 @@ func displayRates() {
 		// fmt.Printf("FIXER_RATES:\n %v\n", FIXER_RATES)
 		fmt.Println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 		fmt.Println("BTC Price Source is:", BTC_PRICE_SOURCE)
-		fmt.Printf("BTC USD: %v\n", BTC_RATES.Rates.USD)
-		fmt.Printf("BTC NZD: %v\n", BTC_RATES.Rates.NZD)
-		fmt.Printf("TO-ARRR/BTC: ARRR (BTC): %.8f\n", ARRR_TO_RATES.Rates.BTC)
-		fmt.Printf("TO-ARRR/BTC: ARRR (USD): %v\n", ARRR_TO_RATES.Rates.USD)
-		fmt.Printf("KC-ARRR/BTC: ARRR (BTC): %.8f\n", ARRR_KC_RATES_BTC.Rates.BTC)
-		fmt.Printf("KC-ARRR/BTC: ARRR (USD): %v\n", ARRR_KC_RATES_BTC.Rates.USD)
-		fmt.Printf("KC-ARRR/USDT: ARRR (BTC): %.8f\n", ARRR_KC_RATES_USDT.Rates.BTC)
-		fmt.Printf("KC-ARRR/USDT: ARRR (USD): %v\n", ARRR_KC_RATES_USDT.Rates.USD)
+		fmt.Printf("BTC USD: %.6f\n", BTC_RATES.Rates.USD)
+		fmt.Printf("BTC NZD: %.6f\n", BTC_RATES.Rates.NZD)
+		fmt.Printf("TradeOgre-ARRR/BTC: ARRR (BTC): %.8f\n", ARRR_TO_RATES.Rates.BTC)
+		fmt.Printf("TradeOgre-ARRR/BTC: ARRR (USD): %.6f\n", ARRR_TO_RATES.Rates.USD)
+		fmt.Printf("KuCoin-ARRR/BTC: ARRR (BTC): %.8f\n", ARRR_BTC_KC_RATES.Rates.BTC)
+		fmt.Printf("KuCoin-ARRR/BTC: ARRR (USD): %.6f\n", ARRR_BTC_KC_RATES.Rates.USD)
+		fmt.Printf("KuCoin-ARRR/USDT: ARRR (BTC): %.8f\n", ARRR_USDT_KC_RATES.Rates.BTC)
+		fmt.Printf("KuCoin-ARRR/USDT: ARRR (USD): %.6f\n", ARRR_USDT_KC_RATES.Rates.USD)
+		fmt.Printf("Binance-KMD/BTC: KMD (BTC) %.8f\n", KMD_BTC_BINANCE_RATES.Rates.BTC)
+		fmt.Printf("Binance-KMD/BTC: KMD (USD) %.6f\n", KMD_BTC_BINANCE_RATES.Rates.USD)
+		fmt.Printf("SafeTrade-VRSC/BTC: VRSC (BTC) %.8f\n", VRSC_BTC_SAFETRADE_RATES.Rates.BTC)
+		fmt.Printf("SafeTrade-VRSC/BTC: VRSC (USD) %.6f\n", VRSC_BTC_SAFETRADE_RATES.Rates.USD)
 		fmt.Println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
 		sleepSeconds := 10

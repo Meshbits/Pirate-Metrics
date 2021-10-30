@@ -6,7 +6,8 @@ import (
 	"time"
 )
 
-var BTC_BINANCE_RATES_USDT ConversionRates
+var BTC_USDT_BINANCE_RATES ConversionRates
+var KMD_BTC_BINANCE_RATES ConversionRates
 
 func BtcUsdtBinanceAPI() {
 	if _, ok := MARKETS_AVAILABLE["binance"]; ok {
@@ -29,10 +30,9 @@ func BtcUsdtBinanceAPI() {
 		// fmt.Println(result)
 		price, _ := strconv.ParseFloat(result.([]interface{})[0].(map[string]interface{})["price"].(string), 64)
 		fmt.Printf("BTC Price (USDT): %v\n", price)
-		fmt.Printf("BTC Price Time (USDT): %d\n", int64(result.([]interface{})[0].(map[string]interface{})["time"].(float64)))
 
 		var btc ConversionRates
-		btc.Timestamp = time.Now().Unix()
+		btc.Timestamp = int64(result.([]interface{})[0].(map[string]interface{})["time"].(float64))
 		btc.Base = "USD"
 		btc.Market = "Binance"
 		btc.Rates.AED = toFixed(FIXER_RATES.Rates.AED*price, 6)
@@ -204,7 +204,7 @@ func BtcUsdtBinanceAPI() {
 		btc.Rates.ZMW = toFixed(FIXER_RATES.Rates.ZMW*price, 6)
 		btc.Rates.ZWL = toFixed(FIXER_RATES.Rates.ZWL*price, 6)
 
-		BTC_BINANCE_RATES_USDT = btc
+		BTC_USDT_BINANCE_RATES = btc
 		if BTC_PRICE_SOURCE == "Binance" {
 			BTC_RATES = btc
 		}
@@ -212,10 +212,220 @@ func BtcUsdtBinanceAPI() {
 		// b, _ := json.Marshal(arrr)
 		// fmt.Println(string(b))
 
-		sleepSeconds := 60 * 3
+		sleepSeconds := 30
 		fmt.Printf("Updated BTC Rates from Binance for BTC/USDT pair. Will update again in %v seconds...\n", sleepSeconds)
 		time.Sleep(time.Duration(sleepSeconds) * time.Second)
 
-		// return
+		return
+	}
+}
+
+func KmdBtcBinanceAPI() {
+	if _, ok := MARKETS_AVAILABLE["binance"]; ok {
+		for _, ma := range MARKETS_AVAILABLE["binance"] {
+			if ma != "KMD-BTC" {
+				MARKETS_AVAILABLE["binance"] = append(MARKETS_AVAILABLE["binance"], "KMD-BTC")
+			}
+		}
+	} else {
+		MARKETS_AVAILABLE["binance"] = append(MARKETS_AVAILABLE["binance"], "KMD-BTC")
+	}
+	// Forever loop to keep fetching rates every N seconds
+	for {
+		url := "https://api.binance.com/api/v3/trades?symbol=KMDBTC"
+		params := ``
+		result, err := RPCResultMap(url, params)
+		if err != nil {
+			fmt.Printf("Got error fetching Binance KMD/BTC rates: %v\n", err)
+		}
+		// fmt.Println(result)
+		kmdBtcPrice, _ := strconv.ParseFloat(result.([]interface{})[0].(map[string]interface{})["price"].(string), 64)
+		kmdUSDPrice := kmdBtcPrice * BTC_RATES.Rates.USD
+		// fmt.Println("==========================")
+		// fmt.Printf("KMD Price (BTC): %.8f\n", kmdBtcPrice)
+		// fmt.Printf("KMD Price (USD): %.6f\n", kmdUSDPrice)
+		// fmt.Println("==========================")
+
+		var kmd ConversionRates
+		kmd.Timestamp = int64(result.([]interface{})[0].(map[string]interface{})["time"].(float64))
+		kmd.Base = "KMD/BTC"
+		kmd.Market = "Binance"
+		kmd.Rates.AED = toFixed(FIXER_RATES.Rates.AED*kmdBtcPrice, 6)
+		kmd.Rates.AFN = toFixed(FIXER_RATES.Rates.AFN*kmdBtcPrice, 6)
+		kmd.Rates.ALL = toFixed(FIXER_RATES.Rates.ALL*kmdBtcPrice, 6)
+		kmd.Rates.AMD = toFixed(FIXER_RATES.Rates.AMD*kmdBtcPrice, 6)
+		kmd.Rates.ANG = toFixed(FIXER_RATES.Rates.ANG*kmdBtcPrice, 6)
+		kmd.Rates.AOA = toFixed(FIXER_RATES.Rates.AOA*kmdBtcPrice, 6)
+		kmd.Rates.ARS = toFixed(FIXER_RATES.Rates.ARS*kmdBtcPrice, 6)
+		kmd.Rates.AUD = toFixed(FIXER_RATES.Rates.AUD*kmdBtcPrice, 6)
+		kmd.Rates.AWG = toFixed(FIXER_RATES.Rates.AWG*kmdBtcPrice, 6)
+		kmd.Rates.AZN = toFixed(FIXER_RATES.Rates.AZN*kmdBtcPrice, 6)
+		kmd.Rates.BAM = toFixed(FIXER_RATES.Rates.BAM*kmdBtcPrice, 6)
+		kmd.Rates.BBD = toFixed(FIXER_RATES.Rates.BBD*kmdBtcPrice, 6)
+		kmd.Rates.BDT = toFixed(FIXER_RATES.Rates.BDT*kmdBtcPrice, 6)
+		kmd.Rates.BGN = toFixed(FIXER_RATES.Rates.BGN*kmdBtcPrice, 6)
+		kmd.Rates.BHD = toFixed(FIXER_RATES.Rates.BHD*kmdBtcPrice, 6)
+		kmd.Rates.BIF = toFixed(FIXER_RATES.Rates.BIF*kmdBtcPrice, 6)
+		kmd.Rates.BMD = toFixed(kmdUSDPrice, 6)
+		kmd.Rates.BND = toFixed(FIXER_RATES.Rates.BND*kmdBtcPrice, 6)
+		kmd.Rates.BOB = toFixed(FIXER_RATES.Rates.BOB*kmdBtcPrice, 6)
+		kmd.Rates.BRL = toFixed(FIXER_RATES.Rates.BRL*kmdBtcPrice, 6)
+		kmd.Rates.BSD = toFixed(FIXER_RATES.Rates.BSD*kmdBtcPrice, 6)
+		kmd.Rates.BTC = toFixed(kmdBtcPrice, 8)
+		kmd.Rates.BTN = toFixed(FIXER_RATES.Rates.BTN*kmdBtcPrice, 6)
+		kmd.Rates.BWP = toFixed(FIXER_RATES.Rates.BWP*kmdBtcPrice, 6)
+		kmd.Rates.BYN = toFixed(FIXER_RATES.Rates.BYN*kmdBtcPrice, 6)
+		kmd.Rates.BYR = toFixed(FIXER_RATES.Rates.BYR*kmdBtcPrice, 6)
+		kmd.Rates.BZD = toFixed(FIXER_RATES.Rates.BZD*kmdBtcPrice, 6)
+		kmd.Rates.CAD = toFixed(FIXER_RATES.Rates.CAD*kmdBtcPrice, 6)
+		kmd.Rates.CDF = toFixed(FIXER_RATES.Rates.CDF*kmdBtcPrice, 6)
+		kmd.Rates.CHF = toFixed(FIXER_RATES.Rates.CHF*kmdBtcPrice, 6)
+		kmd.Rates.CLF = toFixed(FIXER_RATES.Rates.CLF*kmdBtcPrice, 6)
+		kmd.Rates.CLP = toFixed(FIXER_RATES.Rates.CLP*kmdBtcPrice, 6)
+		kmd.Rates.CNY = toFixed(FIXER_RATES.Rates.CNY*kmdBtcPrice, 6)
+		kmd.Rates.COP = toFixed(FIXER_RATES.Rates.COP*kmdBtcPrice, 6)
+		kmd.Rates.CRC = toFixed(FIXER_RATES.Rates.CRC*kmdBtcPrice, 6)
+		kmd.Rates.CUC = toFixed(kmdUSDPrice, 6)
+		kmd.Rates.CUP = toFixed(FIXER_RATES.Rates.CUP*kmdBtcPrice, 6)
+		kmd.Rates.CVE = toFixed(FIXER_RATES.Rates.CVE*kmdBtcPrice, 6)
+		kmd.Rates.CZK = toFixed(FIXER_RATES.Rates.CZK*kmdBtcPrice, 6)
+		kmd.Rates.DJF = toFixed(FIXER_RATES.Rates.DJF*kmdBtcPrice, 6)
+		kmd.Rates.DKK = toFixed(FIXER_RATES.Rates.DKK*kmdBtcPrice, 6)
+		kmd.Rates.DOP = toFixed(FIXER_RATES.Rates.DOP*kmdBtcPrice, 6)
+		kmd.Rates.DZD = toFixed(FIXER_RATES.Rates.DZD*kmdBtcPrice, 6)
+		kmd.Rates.EGP = toFixed(FIXER_RATES.Rates.EGP*kmdBtcPrice, 6)
+		kmd.Rates.ERN = toFixed(FIXER_RATES.Rates.ERN*kmdBtcPrice, 6)
+		kmd.Rates.ETB = toFixed(FIXER_RATES.Rates.ETB*kmdBtcPrice, 6)
+		kmd.Rates.EUR = toFixed(FIXER_RATES.Rates.EUR*kmdBtcPrice, 6)
+		kmd.Rates.FJD = toFixed(FIXER_RATES.Rates.FJD*kmdBtcPrice, 6)
+		kmd.Rates.FKP = toFixed(FIXER_RATES.Rates.FKP*kmdBtcPrice, 6)
+		kmd.Rates.GBP = toFixed(FIXER_RATES.Rates.GBP*kmdBtcPrice, 6)
+		kmd.Rates.GEL = toFixed(FIXER_RATES.Rates.GEL*kmdBtcPrice, 6)
+		kmd.Rates.GGP = toFixed(FIXER_RATES.Rates.GGP*kmdBtcPrice, 6)
+		kmd.Rates.GHS = toFixed(FIXER_RATES.Rates.GHS*kmdBtcPrice, 6)
+		kmd.Rates.GIP = toFixed(FIXER_RATES.Rates.GIP*kmdBtcPrice, 6)
+		kmd.Rates.GMD = toFixed(FIXER_RATES.Rates.GMD*kmdBtcPrice, 6)
+		kmd.Rates.GNF = toFixed(FIXER_RATES.Rates.GNF*kmdBtcPrice, 6)
+		kmd.Rates.GTQ = toFixed(FIXER_RATES.Rates.GTQ*kmdBtcPrice, 6)
+		kmd.Rates.GYD = toFixed(FIXER_RATES.Rates.GYD*kmdBtcPrice, 6)
+		kmd.Rates.HKD = toFixed(FIXER_RATES.Rates.HKD*kmdBtcPrice, 6)
+		kmd.Rates.HNL = toFixed(FIXER_RATES.Rates.HNL*kmdBtcPrice, 6)
+		kmd.Rates.HRK = toFixed(FIXER_RATES.Rates.HRK*kmdBtcPrice, 6)
+		kmd.Rates.HTG = toFixed(FIXER_RATES.Rates.HTG*kmdBtcPrice, 6)
+		kmd.Rates.HUF = toFixed(FIXER_RATES.Rates.HUF*kmdBtcPrice, 6)
+		kmd.Rates.IDR = toFixed(FIXER_RATES.Rates.IDR*kmdBtcPrice, 6)
+		kmd.Rates.ILS = toFixed(FIXER_RATES.Rates.ILS*kmdBtcPrice, 6)
+		kmd.Rates.IMP = toFixed(FIXER_RATES.Rates.IMP*kmdBtcPrice, 6)
+		kmd.Rates.INR = toFixed(FIXER_RATES.Rates.INR*kmdBtcPrice, 6)
+		kmd.Rates.IQD = toFixed(FIXER_RATES.Rates.IQD*kmdBtcPrice, 6)
+		kmd.Rates.IRR = toFixed(FIXER_RATES.Rates.IRR*kmdBtcPrice, 6)
+		kmd.Rates.ISK = toFixed(FIXER_RATES.Rates.ISK*kmdBtcPrice, 6)
+		kmd.Rates.JEP = toFixed(FIXER_RATES.Rates.JEP*kmdBtcPrice, 6)
+		kmd.Rates.JMD = toFixed(FIXER_RATES.Rates.JMD*kmdBtcPrice, 6)
+		kmd.Rates.JOD = toFixed(FIXER_RATES.Rates.JOD*kmdBtcPrice, 6)
+		kmd.Rates.JPY = toFixed(FIXER_RATES.Rates.JPY*kmdBtcPrice, 6)
+		kmd.Rates.KES = toFixed(FIXER_RATES.Rates.KES*kmdBtcPrice, 6)
+		kmd.Rates.KGS = toFixed(FIXER_RATES.Rates.KGS*kmdBtcPrice, 6)
+		kmd.Rates.KHR = toFixed(FIXER_RATES.Rates.KHR*kmdBtcPrice, 6)
+		kmd.Rates.KMF = toFixed(FIXER_RATES.Rates.KMF*kmdBtcPrice, 6)
+		kmd.Rates.KPW = toFixed(FIXER_RATES.Rates.KPW*kmdBtcPrice, 6)
+		kmd.Rates.KRW = toFixed(FIXER_RATES.Rates.KRW*kmdBtcPrice, 6)
+		kmd.Rates.KWD = toFixed(FIXER_RATES.Rates.KWD*kmdBtcPrice, 6)
+		kmd.Rates.KYD = toFixed(FIXER_RATES.Rates.KYD*kmdBtcPrice, 6)
+		kmd.Rates.KZT = toFixed(FIXER_RATES.Rates.KZT*kmdBtcPrice, 6)
+		kmd.Rates.LAK = toFixed(FIXER_RATES.Rates.LAK*kmdBtcPrice, 6)
+		kmd.Rates.LBP = toFixed(FIXER_RATES.Rates.LBP*kmdBtcPrice, 6)
+		kmd.Rates.LKR = toFixed(FIXER_RATES.Rates.LKR*kmdBtcPrice, 6)
+		kmd.Rates.LRD = toFixed(FIXER_RATES.Rates.LRD*kmdBtcPrice, 6)
+		kmd.Rates.LSL = toFixed(FIXER_RATES.Rates.LSL*kmdBtcPrice, 6)
+		kmd.Rates.LTL = toFixed(FIXER_RATES.Rates.LTL*kmdBtcPrice, 6)
+		kmd.Rates.LVL = toFixed(FIXER_RATES.Rates.LVL*kmdBtcPrice, 6)
+		kmd.Rates.LYD = toFixed(FIXER_RATES.Rates.LYD*kmdBtcPrice, 6)
+		kmd.Rates.MAD = toFixed(FIXER_RATES.Rates.MAD*kmdBtcPrice, 6)
+		kmd.Rates.MDL = toFixed(FIXER_RATES.Rates.MDL*kmdBtcPrice, 6)
+		kmd.Rates.MGA = toFixed(FIXER_RATES.Rates.MGA*kmdBtcPrice, 6)
+		kmd.Rates.MKD = toFixed(FIXER_RATES.Rates.MKD*kmdBtcPrice, 6)
+		kmd.Rates.MMK = toFixed(FIXER_RATES.Rates.MMK*kmdBtcPrice, 6)
+		kmd.Rates.MNT = toFixed(FIXER_RATES.Rates.MNT*kmdBtcPrice, 6)
+		kmd.Rates.MOP = toFixed(FIXER_RATES.Rates.MOP*kmdBtcPrice, 6)
+		kmd.Rates.MRO = toFixed(FIXER_RATES.Rates.MRO*kmdBtcPrice, 6)
+		kmd.Rates.MUR = toFixed(FIXER_RATES.Rates.MUR*kmdBtcPrice, 6)
+		kmd.Rates.MVR = toFixed(FIXER_RATES.Rates.MVR*kmdBtcPrice, 6)
+		kmd.Rates.MWK = toFixed(FIXER_RATES.Rates.MWK*kmdBtcPrice, 6)
+		kmd.Rates.MXN = toFixed(FIXER_RATES.Rates.MXN*kmdBtcPrice, 6)
+		kmd.Rates.MYR = toFixed(FIXER_RATES.Rates.MYR*kmdBtcPrice, 6)
+		kmd.Rates.MZN = toFixed(FIXER_RATES.Rates.MZN*kmdBtcPrice, 6)
+		kmd.Rates.NAD = toFixed(FIXER_RATES.Rates.NAD*kmdBtcPrice, 6)
+		kmd.Rates.NGN = toFixed(FIXER_RATES.Rates.NGN*kmdBtcPrice, 6)
+		kmd.Rates.NIO = toFixed(FIXER_RATES.Rates.NIO*kmdBtcPrice, 6)
+		kmd.Rates.NOK = toFixed(FIXER_RATES.Rates.NOK*kmdBtcPrice, 6)
+		kmd.Rates.NPR = toFixed(FIXER_RATES.Rates.NPR*kmdBtcPrice, 6)
+		kmd.Rates.NZD = toFixed(FIXER_RATES.Rates.NZD*kmdBtcPrice, 6)
+		kmd.Rates.OMR = toFixed(FIXER_RATES.Rates.OMR*kmdBtcPrice, 6)
+		kmd.Rates.PAB = toFixed(FIXER_RATES.Rates.PAB*kmdBtcPrice, 6)
+		kmd.Rates.PEN = toFixed(FIXER_RATES.Rates.PEN*kmdBtcPrice, 6)
+		kmd.Rates.PGK = toFixed(FIXER_RATES.Rates.PGK*kmdBtcPrice, 6)
+		kmd.Rates.PHP = toFixed(FIXER_RATES.Rates.PHP*kmdBtcPrice, 6)
+		kmd.Rates.PKR = toFixed(FIXER_RATES.Rates.PKR*kmdBtcPrice, 6)
+		kmd.Rates.PLN = toFixed(FIXER_RATES.Rates.PLN*kmdBtcPrice, 6)
+		kmd.Rates.PYG = toFixed(FIXER_RATES.Rates.PYG*kmdBtcPrice, 6)
+		kmd.Rates.QAR = toFixed(FIXER_RATES.Rates.QAR*kmdBtcPrice, 6)
+		kmd.Rates.RON = toFixed(FIXER_RATES.Rates.RON*kmdBtcPrice, 6)
+		kmd.Rates.RSD = toFixed(FIXER_RATES.Rates.RSD*kmdBtcPrice, 6)
+		kmd.Rates.RUB = toFixed(FIXER_RATES.Rates.RUB*kmdBtcPrice, 6)
+		kmd.Rates.RWF = toFixed(FIXER_RATES.Rates.RWF*kmdBtcPrice, 6)
+		kmd.Rates.SAR = toFixed(FIXER_RATES.Rates.SAR*kmdBtcPrice, 6)
+		kmd.Rates.SBD = toFixed(FIXER_RATES.Rates.SBD*kmdBtcPrice, 6)
+		kmd.Rates.SCR = toFixed(FIXER_RATES.Rates.SCR*kmdBtcPrice, 6)
+		kmd.Rates.SDG = toFixed(FIXER_RATES.Rates.SDG*kmdBtcPrice, 6)
+		kmd.Rates.SEK = toFixed(FIXER_RATES.Rates.SEK*kmdBtcPrice, 6)
+		kmd.Rates.SGD = toFixed(FIXER_RATES.Rates.SGD*kmdBtcPrice, 6)
+		kmd.Rates.SHP = toFixed(FIXER_RATES.Rates.SHP*kmdBtcPrice, 6)
+		kmd.Rates.SLL = toFixed(FIXER_RATES.Rates.SLL*kmdBtcPrice, 6)
+		kmd.Rates.SOS = toFixed(FIXER_RATES.Rates.SOS*kmdBtcPrice, 6)
+		kmd.Rates.SRD = toFixed(FIXER_RATES.Rates.SRD*kmdBtcPrice, 6)
+		kmd.Rates.STD = toFixed(FIXER_RATES.Rates.STD*kmdBtcPrice, 6)
+		kmd.Rates.SVC = toFixed(FIXER_RATES.Rates.SVC*kmdBtcPrice, 6)
+		kmd.Rates.SYP = toFixed(FIXER_RATES.Rates.SYP*kmdBtcPrice, 6)
+		kmd.Rates.SZL = toFixed(FIXER_RATES.Rates.SZL*kmdBtcPrice, 6)
+		kmd.Rates.THB = toFixed(FIXER_RATES.Rates.THB*kmdBtcPrice, 6)
+		kmd.Rates.TJS = toFixed(FIXER_RATES.Rates.TJS*kmdBtcPrice, 6)
+		kmd.Rates.TMT = toFixed(FIXER_RATES.Rates.TMT*kmdBtcPrice, 6)
+		kmd.Rates.TND = toFixed(FIXER_RATES.Rates.TND*kmdBtcPrice, 6)
+		kmd.Rates.TOP = toFixed(FIXER_RATES.Rates.TOP*kmdBtcPrice, 6)
+		kmd.Rates.TRY = toFixed(FIXER_RATES.Rates.TRY*kmdBtcPrice, 6)
+		kmd.Rates.TTD = toFixed(FIXER_RATES.Rates.TTD*kmdBtcPrice, 6)
+		kmd.Rates.TWD = toFixed(FIXER_RATES.Rates.TWD*kmdBtcPrice, 6)
+		kmd.Rates.TZS = toFixed(FIXER_RATES.Rates.TZS*kmdBtcPrice, 6)
+		kmd.Rates.UAH = toFixed(FIXER_RATES.Rates.UAH*kmdBtcPrice, 6)
+		kmd.Rates.UGX = toFixed(FIXER_RATES.Rates.UGX*kmdBtcPrice, 6)
+		kmd.Rates.USD = toFixed(kmdUSDPrice, 6)
+		kmd.Rates.UYU = toFixed(FIXER_RATES.Rates.UYU*kmdBtcPrice, 6)
+		kmd.Rates.UZS = toFixed(FIXER_RATES.Rates.UZS*kmdBtcPrice, 6)
+		kmd.Rates.VEF = toFixed(FIXER_RATES.Rates.VEF*kmdBtcPrice, 6)
+		kmd.Rates.VND = toFixed(FIXER_RATES.Rates.VND*kmdBtcPrice, 6)
+		kmd.Rates.VUV = toFixed(FIXER_RATES.Rates.VUV*kmdBtcPrice, 6)
+		kmd.Rates.WST = toFixed(FIXER_RATES.Rates.WST*kmdBtcPrice, 6)
+		kmd.Rates.XAF = toFixed(FIXER_RATES.Rates.XAF*kmdBtcPrice, 6)
+		kmd.Rates.XAG = toFixed(FIXER_RATES.Rates.XAG*kmdBtcPrice, 6)
+		kmd.Rates.XAU = toFixed(FIXER_RATES.Rates.XAU*kmdBtcPrice, 6)
+		kmd.Rates.XCD = toFixed(FIXER_RATES.Rates.XCD*kmdBtcPrice, 6)
+		kmd.Rates.XDR = toFixed(FIXER_RATES.Rates.XDR*kmdBtcPrice, 6)
+		kmd.Rates.XOF = toFixed(FIXER_RATES.Rates.XOF*kmdBtcPrice, 6)
+		kmd.Rates.XPF = toFixed(FIXER_RATES.Rates.XPF*kmdBtcPrice, 6)
+		kmd.Rates.YER = toFixed(FIXER_RATES.Rates.YER*kmdBtcPrice, 6)
+		kmd.Rates.ZAR = toFixed(FIXER_RATES.Rates.ZAR*kmdBtcPrice, 6)
+		kmd.Rates.ZMK = toFixed(FIXER_RATES.Rates.ZMK*kmdBtcPrice, 6)
+		kmd.Rates.ZMW = toFixed(FIXER_RATES.Rates.ZMW*kmdBtcPrice, 6)
+		kmd.Rates.ZWL = toFixed(FIXER_RATES.Rates.ZWL*kmdBtcPrice, 6)
+
+		KMD_BTC_BINANCE_RATES = kmd
+
+		// b, _ := json.Marshal(arrr)
+		// fmt.Println(string(b))
+
+		sleepSeconds := 30
+		fmt.Printf("Updated KMD Rates from Binance for KMD/BTC pair. Will update again in %v seconds...\n", sleepSeconds)
+		time.Sleep(time.Duration(sleepSeconds) * time.Second)
 	}
 }

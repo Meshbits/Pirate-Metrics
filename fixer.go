@@ -213,12 +213,6 @@ func fixer(APIToken string) /*(ConversionRates, error)*/ {
 		// fmt.Println(string(b))
 
 		FIXER_RATES = fx
-		switch BTC_PRICE_SOURCE {
-		case "Binance":
-			BtcUsdtBinanceAPI()
-		case "CoinGecko":
-			BtcUsdCoinGeckoAPI()
-		}
 
 		sleepSeconds := 60 * 60 * 4
 		fmt.Printf("Updated Fixer Rates. Will update again in %v seconds...\n", sleepSeconds)
