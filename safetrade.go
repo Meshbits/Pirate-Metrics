@@ -211,7 +211,7 @@ func VrscBtcSafeTradeAPI() {
 		// b, _ := json.Marshal(arrr)
 		// fmt.Println(string(b))
 
-		sleepSeconds := 30
+		sleepSeconds := SAFETRADE_SECONDS
 		fmt.Printf("Updated VRSC Rates from SafeTrade for VRSC/BTC pair. Will update again in %v seconds...\n", sleepSeconds)
 		time.Sleep(time.Duration(sleepSeconds) * time.Second)
 

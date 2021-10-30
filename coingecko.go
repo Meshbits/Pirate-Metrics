@@ -210,7 +210,7 @@ func BtcUsdCoinGeckoAPI() {
 		// b, _ := json.Marshal(btc)
 		// fmt.Println(string(b))
 
-		sleepSeconds := 60 * 3
+		sleepSeconds := COINGECKO_SECONDS
 		fmt.Printf("Updated Bitcoin Rates. Will update again in %v seconds...\n", sleepSeconds)
 		time.Sleep(time.Duration(sleepSeconds) * time.Second)
 

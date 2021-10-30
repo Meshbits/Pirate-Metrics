@@ -209,7 +209,7 @@ func ArrrToAPI() {
 		// b, _ := json.Marshal(arrr)
 		// fmt.Println(string(b))
 
-		sleepSeconds := 60
+		sleepSeconds := TRADEOGRE_SECONDS
 		fmt.Printf("Updated Pirate Rates from TradeOgre. Will update again in %v seconds...\n", sleepSeconds)
 		time.Sleep(time.Duration(sleepSeconds) * time.Second)
 

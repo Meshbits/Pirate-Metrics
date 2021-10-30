@@ -11,6 +11,14 @@ import (
 
 var BTC_RATES ConversionRates
 
+var BINANCE_SECONDS int = 60 * 2
+var KUCOIN_SECONDS int = 60 * 2
+var TRADEOGRE_SECONDS int = 60
+var SAFETRADE_SECONDS int = 60
+var COINGECKO_SECONDS int = 60 * 2
+var FIXER_SECONDS int = 60 * 60 * 4
+var DISPLAY_RATES_SECONDS int = 30
+
 type ConversionRates struct {
 	Success   bool   `json:"success"`
 	Timestamp int64  `json:"timestamp"`

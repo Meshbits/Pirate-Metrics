@@ -210,7 +210,7 @@ func ArrrBtcKcAPI() {
 		// b, _ := json.Marshal(arrr)
 		// fmt.Println(string(b))
 
-		sleepSeconds := 30
+		sleepSeconds := KUCOIN_SECONDS
 		fmt.Printf("Updated Pirate Rates from KuCoin for ARRR/BTC pair. Will update again in %v seconds...\n", sleepSeconds)
 		time.Sleep(time.Duration(sleepSeconds) * time.Second)
 
@@ -431,7 +431,7 @@ func ArrrUsdtKcAPI() {
 		// b, _ := json.Marshal(arrr)
 		// fmt.Println(string(b))
 
-		sleepSeconds := 30
+		sleepSeconds := KUCOIN_SECONDS
 		fmt.Printf("Updated Pirate Rates from KuCoin for ARRR/USDT pair. Will update again in %v seconds...\n", sleepSeconds)
 		time.Sleep(time.Duration(sleepSeconds) * time.Second)
 

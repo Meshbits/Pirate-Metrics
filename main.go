@@ -205,7 +205,7 @@ func displayRates() {
 		fmt.Printf("SafeTrade-VRSC/BTC: VRSC (USD) %.6f\n", VRSC_BTC_SAFETRADE_RATES.Rates.USD)
 		fmt.Println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
-		sleepSeconds := 10
+		sleepSeconds := DISPLAY_RATES_SECONDS
 		fmt.Printf("Will Display Rates every other %v seconds...\n\n", sleepSeconds)
 		time.Sleep(time.Duration(sleepSeconds) * time.Second)
 	}

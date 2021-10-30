@@ -212,7 +212,7 @@ func BtcUsdtBinanceAPI() {
 		// b, _ := json.Marshal(arrr)
 		// fmt.Println(string(b))
 
-		sleepSeconds := 30
+		sleepSeconds := BINANCE_SECONDS
 		fmt.Printf("Updated BTC Rates from Binance for BTC/USDT pair. Will update again in %v seconds...\n", sleepSeconds)
 		time.Sleep(time.Duration(sleepSeconds) * time.Second)
 
@@ -424,7 +424,7 @@ func KmdBtcBinanceAPI() {
 		// b, _ := json.Marshal(arrr)
 		// fmt.Println(string(b))
 
-		sleepSeconds := 30
+		sleepSeconds := BINANCE_SECONDS
 		fmt.Printf("Updated KMD Rates from Binance for KMD/BTC pair. Will update again in %v seconds...\n", sleepSeconds)
 		time.Sleep(time.Duration(sleepSeconds) * time.Second)
 	}

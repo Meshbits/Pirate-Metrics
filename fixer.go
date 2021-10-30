@@ -214,7 +214,7 @@ func fixer(APIToken string) /*(ConversionRates, error)*/ {
 
 		FIXER_RATES = fx
 
-		sleepSeconds := 60 * 60 * 4
+		sleepSeconds := FIXER_SECONDS
 		fmt.Printf("Updated Fixer Rates. Will update again in %v seconds...\n", sleepSeconds)
 		time.Sleep(time.Duration(sleepSeconds) * time.Second)
 
