@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"strconv"
 	"time"
@@ -26,11 +25,11 @@ func BtcUsdtBinanceAPI() {
 		params := ``
 		result, err := RPCResultMap(url, params)
 		if err != nil {
-			fmt.Printf("Got error fetching Binance BTC/USDT rates: %v\n", err)
+			log.Printf("Got error fetching Binance BTC/USDT rates: %v\n", err)
 		}
 		// fmt.Println(result)
 		price, _ := strconv.ParseFloat(result.([]interface{})[0].(map[string]interface{})["price"].(string), 64)
-		fmt.Printf("BTC Price (USDT): %v\n", price)
+		log.Printf("BTC Price (USDT): %v\n", price)
 
 		var btc ConversionRates
 		btc.Timestamp = int64(result.([]interface{})[0].(map[string]interface{})["time"].(float64))
@@ -214,7 +213,7 @@ func BtcUsdtBinanceAPI() {
 		// fmt.Println(string(b))
 
 		sleepSeconds := BINANCE_SECONDS
-		fmt.Printf("Updated BTC Rates from Binance for BTC/USDT pair. Will update again in %v seconds...\n", sleepSeconds)
+		log.Printf("Updated BTC Rates from Binance for BTC/USDT pair. Will update again in %v seconds...\n", sleepSeconds)
 		time.Sleep(time.Duration(sleepSeconds) * time.Second)
 
 		return
