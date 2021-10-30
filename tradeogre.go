@@ -9,7 +9,15 @@ import (
 var ARRR_TO_RATES ConversionRates
 
 func ArrrToAPI() {
-	MARKETS_AVAILABLE["tradeogre"] = append(MARKETS_AVAILABLE["tradeogre"], "ARRR-BTC")
+	if _, ok := MARKETS_AVAILABLE["tradeogre"]; ok {
+		for _, ma := range MARKETS_AVAILABLE["tradeogre"] {
+			if ma != "ARRR-BTC" {
+				MARKETS_AVAILABLE["tradeogre"] = append(MARKETS_AVAILABLE["tradeogre"], "ARRR-BTC")
+			}
+		}
+	} else {
+		MARKETS_AVAILABLE["tradeogre"] = append(MARKETS_AVAILABLE["tradeogre"], "ARRR-BTC")
+	}
 	// Forever loop to keep fetching rates every N seconds
 	for {
 		url := "https://tradeogre.com/api/v1/ticker/BTC-ARRR"

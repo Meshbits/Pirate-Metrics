@@ -10,7 +10,15 @@ var ARRR_KC_RATES_BTC ConversionRates
 var ARRR_KC_RATES_USDT ConversionRates
 
 func ArrrBtcKcAPI() {
-	MARKETS_AVAILABLE["kucoin"] = append(MARKETS_AVAILABLE["kucoin"], "ARRR-BTC")
+	if _, ok := MARKETS_AVAILABLE["kucoin"]; ok {
+		for _, ma := range MARKETS_AVAILABLE["kucoin"] {
+			if ma != "ARRR-BTC" {
+				MARKETS_AVAILABLE["kucoin"] = append(MARKETS_AVAILABLE["kucoin"], "ARRR-BTC")
+			}
+		}
+	} else {
+		MARKETS_AVAILABLE["kucoin"] = append(MARKETS_AVAILABLE["kucoin"], "ARRR-BTC")
+	}
 	// Forever loop to keep fetching rates every N seconds
 	for {
 		url := "https://api.kucoin.com/api/v1/market/histories?symbol=ARRR-BTC"
@@ -211,7 +219,15 @@ func ArrrBtcKcAPI() {
 }
 
 func ArrrUsdtKcAPI() {
-	MARKETS_AVAILABLE["kucoin"] = append(MARKETS_AVAILABLE["kucoin"], "ARRR-USDT")
+	if _, ok := MARKETS_AVAILABLE["kucoin"]; ok {
+		for _, ma := range MARKETS_AVAILABLE["kucoin"] {
+			if ma != "ARRR-USDT" {
+				MARKETS_AVAILABLE["kucoin"] = append(MARKETS_AVAILABLE["kucoin"], "ARRR-USDT")
+			}
+		}
+	} else {
+		MARKETS_AVAILABLE["kucoin"] = append(MARKETS_AVAILABLE["kucoin"], "ARRR-USDT")
+	}
 	// Forever loop to keep fetching rates every N seconds
 	for {
 		url := "https://api.kucoin.com/api/v1/market/histories?symbol=ARRR-USDT"

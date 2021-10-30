@@ -9,7 +9,15 @@ import (
 var BTC_BINANCE_RATES_USDT ConversionRates
 
 func BtcUsdtBinanceAPI() {
-	MARKETS_AVAILABLE["binance"] = append(MARKETS_AVAILABLE["binance"], "BTC-USDT")
+	if _, ok := MARKETS_AVAILABLE["binance"]; ok {
+		for _, ma := range MARKETS_AVAILABLE["binance"] {
+			if ma != "BTC-USDT" {
+				MARKETS_AVAILABLE["binance"] = append(MARKETS_AVAILABLE["binance"], "BTC-USDT")
+			}
+		}
+	} else {
+		MARKETS_AVAILABLE["binance"] = append(MARKETS_AVAILABLE["binance"], "BTC-USDT")
+	}
 	// Forever loop to keep fetching rates every N seconds
 	for {
 		url := "https://api.binance.com/api/v3/trades?symbol=BTCUSDT"

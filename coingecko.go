@@ -8,7 +8,15 @@ import (
 var BTC_COINGECKO_RATES ConversionRates
 
 func BtcUsdCoinGeckoAPI() {
-	MARKETS_AVAILABLE["coingecko"] = append(MARKETS_AVAILABLE["coingecko"], "BTC-USD")
+	if _, ok := MARKETS_AVAILABLE["binance"]; ok {
+		for _, ma := range MARKETS_AVAILABLE["coingecko"] {
+			if ma != "BTC-USD" {
+				MARKETS_AVAILABLE["coingecko"] = append(MARKETS_AVAILABLE["coingecko"], "BTC-USD")
+			}
+		}
+	} else {
+		MARKETS_AVAILABLE["coingecko"] = append(MARKETS_AVAILABLE["coingecko"], "BTC-USD")
+	}
 	// Forever loop to keep fetching rates every N seconds
 	for {
 		url := "https://api.coingecko.com/api/v3/coins/markets?"
