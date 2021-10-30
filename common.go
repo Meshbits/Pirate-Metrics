@@ -9,12 +9,14 @@ import (
 	"time"
 )
 
-// time.Now().Unix()
+var BTC_RATES ConversionRates
 
-type pirateRates struct {
+type ConversionRates struct {
+	Success   bool   `json:"success"`
 	Timestamp int64  `json:"timestamp"`
 	Base      string `json:"base"`
-	Market    string `json:"market"`
+	Date      string `json:"date,omitempty"`
+	Market    string `json:"market,omitempty"`
 	Rates     struct {
 		AED float64 `json:"AED"`
 		AFN float64 `json:"AFN"`

@@ -6,11 +6,11 @@ import (
 	"time"
 )
 
-var ARRR_KC_RATES_BTC pirateRates
-var ARRR_KC_RATES_USDT pirateRates
+var ARRR_KC_RATES_BTC ConversionRates
+var ARRR_KC_RATES_USDT ConversionRates
 
 func ArrrBtcKcAPI() {
-
+	MARKETS_AVAILABLE["kucoin"] = append(MARKETS_AVAILABLE["kucoin"], "ARRR-BTC")
 	// Forever loop to keep fetching rates every N seconds
 	for {
 		url := "https://api.kucoin.com/api/v1/market/histories?symbol=ARRR-BTC"
@@ -22,7 +22,8 @@ func ArrrBtcKcAPI() {
 		// fmt.Println(result)
 		fmt.Printf("ARRR Price (BTC): %v\n", result.(map[string]interface{})["data"].([]interface{})[0].(map[string]interface{})["price"])
 
-		var arrr pirateRates
+		var arrr ConversionRates
+		arrr.Success = true
 		arrr.Timestamp = time.Now().Unix()
 		arrrBTC, _ := strconv.ParseFloat(result.(map[string]interface{})["data"].([]interface{})[0].(map[string]interface{})["price"].(string), 64)
 		arrr.Base = "ARRR/BTC"
@@ -210,7 +211,7 @@ func ArrrBtcKcAPI() {
 }
 
 func ArrrUsdtKcAPI() {
-
+	MARKETS_AVAILABLE["kucoin"] = append(MARKETS_AVAILABLE["kucoin"], "ARRR-USDT")
 	// Forever loop to keep fetching rates every N seconds
 	for {
 		url := "https://api.kucoin.com/api/v1/market/histories?symbol=ARRR-USDT"
@@ -222,7 +223,8 @@ func ArrrUsdtKcAPI() {
 		// fmt.Println(result)
 		fmt.Printf("ARRR Price (USDT): %v\n", result.(map[string]interface{})["data"].([]interface{})[0].(map[string]interface{})["price"])
 
-		var arrr pirateRates
+		var arrr ConversionRates
+		arrr.Success = true
 		arrr.Timestamp = time.Now().Unix()
 		arrrUSDT, _ := strconv.ParseFloat(result.(map[string]interface{})["data"].([]interface{})[0].(map[string]interface{})["price"].(string), 64)
 		arrr.Base = "ARRR/USDT"
@@ -402,7 +404,7 @@ func ArrrUsdtKcAPI() {
 		// fmt.Println(string(b))
 
 		sleepSeconds := 30
-		fmt.Printf("Updated Pirate Rates from KuCoinfor ARRR/USDT pair. Will update again in %v seconds...\n", sleepSeconds)
+		fmt.Printf("Updated Pirate Rates from KuCoin for ARRR/USDT pair. Will update again in %v seconds...\n", sleepSeconds)
 		time.Sleep(time.Duration(sleepSeconds) * time.Second)
 
 		// return

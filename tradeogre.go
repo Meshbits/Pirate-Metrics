@@ -6,9 +6,10 @@ import (
 	"time"
 )
 
-var ARRR_TO_RATES pirateRates
+var ARRR_TO_RATES ConversionRates
 
 func ArrrToAPI() {
+	MARKETS_AVAILABLE["tradeogre"] = append(MARKETS_AVAILABLE["tradeogre"], "ARRR-BTC")
 	// Forever loop to keep fetching rates every N seconds
 	for {
 		url := "https://tradeogre.com/api/v1/ticker/BTC-ARRR"
@@ -20,7 +21,8 @@ func ArrrToAPI() {
 		// fmt.Println(result)
 		fmt.Printf("ARRR Price (BTC): %v\n", result.(map[string]interface{})["price"].(string))
 
-		var arrr pirateRates
+		var arrr ConversionRates
+		arrr.Success = true
 		arrr.Timestamp = time.Now().Unix()
 		arrrBTC, _ := strconv.ParseFloat(result.(map[string]interface{})["price"].(string), 64)
 		arrr.Base = "ARRR/BTC"
