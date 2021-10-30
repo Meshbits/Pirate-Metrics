@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"strconv"
 	"time"
 )
@@ -236,7 +237,7 @@ func KmdBtcBinanceAPI() {
 		params := ``
 		result, err := RPCResultMap(url, params)
 		if err != nil {
-			fmt.Printf("Got error fetching Binance KMD/BTC rates: %v\n", err)
+			log.Printf("Got error fetching Binance KMD/BTC rates: %v\n", err)
 		}
 		// fmt.Println(result)
 		kmdBtcPrice, _ := strconv.ParseFloat(result.([]interface{})[0].(map[string]interface{})["price"].(string), 64)
@@ -425,7 +426,7 @@ func KmdBtcBinanceAPI() {
 		// fmt.Println(string(b))
 
 		sleepSeconds := BINANCE_SECONDS
-		fmt.Printf("Updated KMD Rates from Binance for KMD/BTC pair. Will update again in %v seconds...\n", sleepSeconds)
+		log.Printf("Updated KMD Rates from Binance for KMD/BTC pair. Will update again in %v seconds...\n", sleepSeconds)
 		time.Sleep(time.Duration(sleepSeconds) * time.Second)
 	}
 }

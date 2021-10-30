@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"time"
 )
 
@@ -23,7 +23,7 @@ func fixer(APIToken string) /*(ConversionRates, error)*/ {
 		params := `access_key=` + APIToken + `&format=1`
 		result, err := RPCResultMap(url, params)
 		if err != nil {
-			fmt.Printf("Got error fetching Fixer rates: %v\n", err)
+			log.Printf("Got error fetching Fixer rates: %v\n", err)
 			// return ConversionRates{Success: false}, errors.New(err.Error())
 		}
 		// fmt.Println(result)
@@ -215,7 +215,7 @@ func fixer(APIToken string) /*(ConversionRates, error)*/ {
 		FIXER_RATES = fx
 
 		sleepSeconds := FIXER_SECONDS
-		fmt.Printf("Updated Fixer Rates. Will update again in %v seconds...\n", sleepSeconds)
+		log.Printf("Updated Fixer Rates. Will update again in %v seconds...\n", sleepSeconds)
 		time.Sleep(time.Duration(sleepSeconds) * time.Second)
 
 		// return fx, nil

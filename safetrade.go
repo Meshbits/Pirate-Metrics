@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"time"
 )
 
@@ -23,7 +23,7 @@ func VrscBtcSafeTradeAPI() {
 		params := ``
 		result, err := RPCResultMap(url, params)
 		if err != nil {
-			fmt.Printf("Got error fetching SafeTrade VRSC/BTC rates: %v\n", err)
+			log.Printf("Got error fetching SafeTrade VRSC/BTC rates: %v\n", err)
 		}
 		// fmt.Println(result)
 		vrscBTCPrice := result.([]interface{})[0].(map[string]interface{})["price"].(float64)
@@ -212,7 +212,7 @@ func VrscBtcSafeTradeAPI() {
 		// fmt.Println(string(b))
 
 		sleepSeconds := SAFETRADE_SECONDS
-		fmt.Printf("Updated VRSC Rates from SafeTrade for VRSC/BTC pair. Will update again in %v seconds...\n", sleepSeconds)
+		log.Printf("Updated VRSC Rates from SafeTrade for VRSC/BTC pair. Will update again in %v seconds...\n", sleepSeconds)
 		time.Sleep(time.Duration(sleepSeconds) * time.Second)
 
 		// return

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"time"
 )
 
@@ -23,10 +23,10 @@ func BtcUsdCoinGeckoAPI() {
 		params := `vs_currency=usd&ids=bitcoin&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=1h%2C%2024h%2C%207d%2C%2030d`
 		result, err := RPCResultMap(url, params)
 		if err != nil {
-			fmt.Printf("Got error fetching Coingecko BTC/USD rates: %v\n", err)
+			log.Printf("Got error fetching Coingecko BTC/USD rates: %v\n", err)
 		}
 		// fmt.Println(result)
-		fmt.Printf("BTC Price (USD): %v\n", result.([]interface{})[0].(map[string]interface{})["current_price"])
+		log.Printf("BTC Price (USD): %v\n", result.([]interface{})[0].(map[string]interface{})["current_price"])
 
 		var btc ConversionRates
 		btc.Success = true
@@ -211,7 +211,7 @@ func BtcUsdCoinGeckoAPI() {
 		// fmt.Println(string(b))
 
 		sleepSeconds := COINGECKO_SECONDS
-		fmt.Printf("Updated Bitcoin Rates. Will update again in %v seconds...\n", sleepSeconds)
+		log.Printf("Updated Bitcoin Rates. Will update again in %v seconds...\n", sleepSeconds)
 		time.Sleep(time.Duration(sleepSeconds) * time.Second)
 
 		// return

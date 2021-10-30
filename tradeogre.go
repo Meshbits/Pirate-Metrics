@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"strconv"
 	"time"
 )
@@ -24,10 +24,10 @@ func ArrrToAPI() {
 		params := ``
 		result, err := RPCResultMap(url, params)
 		if err != nil {
-			fmt.Printf("Got error fetching TradeOgre ARRR/BTC rates: %v\n", err)
+			log.Printf("Got error fetching TradeOgre ARRR/BTC rates: %v\n", err)
 		}
 		// fmt.Println(result)
-		fmt.Printf("ARRR Price (BTC): %v\n", result.(map[string]interface{})["price"].(string))
+		log.Printf("ARRR Price (BTC): %v\n", result.(map[string]interface{})["price"].(string))
 
 		var arrr ConversionRates
 		arrr.Success = true
@@ -210,7 +210,7 @@ func ArrrToAPI() {
 		// fmt.Println(string(b))
 
 		sleepSeconds := TRADEOGRE_SECONDS
-		fmt.Printf("Updated Pirate Rates from TradeOgre. Will update again in %v seconds...\n", sleepSeconds)
+		log.Printf("Updated Pirate Rates from TradeOgre. Will update again in %v seconds...\n", sleepSeconds)
 		time.Sleep(time.Duration(sleepSeconds) * time.Second)
 
 		// return

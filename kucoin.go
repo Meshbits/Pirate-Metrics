@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"strconv"
 	"time"
 )
@@ -234,10 +235,10 @@ func ArrrUsdtKcAPI() {
 		params := ``
 		result, err := RPCResultMap(url, params)
 		if err != nil {
-			fmt.Printf("Got error fetching KuCoin ARRR/USDT rates: %v\n", err)
+			log.Printf("Got error fetching KuCoin ARRR/USDT rates: %v\n", err)
 		}
 		// fmt.Println(result)
-		fmt.Printf("ARRR Price (USDT): %v\n", result.(map[string]interface{})["data"].([]interface{})[0].(map[string]interface{})["price"])
+		log.Printf("ARRR Price (USDT): %v\n", result.(map[string]interface{})["data"].([]interface{})[0].(map[string]interface{})["price"])
 
 		var arrrUsdtKc ConversionRates
 		arrrUsdtKc.Success = true
@@ -432,7 +433,7 @@ func ArrrUsdtKcAPI() {
 		// fmt.Println(string(b))
 
 		sleepSeconds := KUCOIN_SECONDS
-		fmt.Printf("Updated Pirate Rates from KuCoin for ARRR/USDT pair. Will update again in %v seconds...\n", sleepSeconds)
+		log.Printf("Updated Pirate Rates from KuCoin for ARRR/USDT pair. Will update again in %v seconds...\n", sleepSeconds)
 		time.Sleep(time.Duration(sleepSeconds) * time.Second)
 
 		// return
