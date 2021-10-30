@@ -23,6 +23,7 @@ func ArrrBtcKcAPI() {
 		fmt.Printf("ARRR Price (BTC): %v\n", result.(map[string]interface{})["data"].([]interface{})[0].(map[string]interface{})["price"])
 
 		var arrr pirateRates
+		arrr.Timestamp = time.Now().Unix()
 		arrrBTC, _ := strconv.ParseFloat(result.(map[string]interface{})["data"].([]interface{})[0].(map[string]interface{})["price"].(string), 64)
 		arrr.Base = "ARRR/BTC"
 		arrr.Market = "KuCoin"
@@ -222,6 +223,7 @@ func ArrrUsdtKcAPI() {
 		fmt.Printf("ARRR Price (USDT): %v\n", result.(map[string]interface{})["data"].([]interface{})[0].(map[string]interface{})["price"])
 
 		var arrr pirateRates
+		arrr.Timestamp = time.Now().Unix()
 		arrrUSDT, _ := strconv.ParseFloat(result.(map[string]interface{})["data"].([]interface{})[0].(map[string]interface{})["price"].(string), 64)
 		arrr.Base = "ARRR/USDT"
 		arrr.Market = "KuCoin"

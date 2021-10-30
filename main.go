@@ -15,19 +15,53 @@ import (
 func ArrrPrice(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	// fmt.Println("mux vars:", vars)
-	// fmt.Fprintf(w, "Market: %v\nPair: ARRR/%v\n", strings.ToLower(vars["market"]), strings.ToUpper(vars["pair"]))
+	// fmt.Println("symbols:", vars["symbols"])
+	// fmt.Printf("Market: %v\nPair: ARRR/%v\n", strings.ToLower(vars["market"]), strings.ToUpper(vars["pair"]))
 	var arrrPrice []byte
+	var _arrrPrice pirateRates
 	switch strings.ToLower(vars["market"]) {
 	case "tradeogre":
-		arrrPrice, _ = json.Marshal(ARRR_TO_RATES)
+		_arrrPrice = ARRR_TO_RATES
 	case "kucoin":
 		switch strings.ToUpper(vars["pair"]) {
 		case "ARRR-BTC":
-			arrrPrice, _ = json.Marshal(ARRR_KC_RATES_BTC)
+			_arrrPrice = ARRR_KC_RATES_BTC
 		case "ARRR-USDT":
-			arrrPrice, _ = json.Marshal(ARRR_KC_RATES_USDT)
+			_arrrPrice = ARRR_KC_RATES_USDT
 		}
 	}
+	arrrPrice, _ = json.Marshal(_arrrPrice)
+
+	if vars["symbols"] != "" {
+		symbols := strings.Split(vars["symbols"], ",")
+		var result interface{}
+		json.Unmarshal([]byte(arrrPrice), &result)
+		var rates []map[string]float64
+		var qr queriedRates
+		for _, symbol := range symbols {
+			// fmt.Println(symbol)
+			for i, v := range result.(map[string]interface{})["rates"].(map[string]interface{}) {
+				if strings.Compare(i, symbol) == 0 {
+					// fmt.Println("i -", i)
+					// fmt.Println("v -", v)
+					rates = append(rates, map[string]float64{i: v.(float64)})
+				}
+			}
+		}
+		// fmt.Println(rates)
+		qr.Timestamp = _arrrPrice.Timestamp
+		qr.Rates = rates
+		qr.Base = _arrrPrice.Base
+		qr.Market = _arrrPrice.Market
+		// fmt.Println(qr)
+
+		queryRes, _ := json.Marshal(qr)
+		// fmt.Println(string(queryRes))
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(queryRes)
+		return
+	}
+
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(arrrPrice)
 }
@@ -55,6 +89,7 @@ func main() {
 	r := mux.NewRouter()
 	// Routes consist of a path and a handler function.
 	r.HandleFunc("/", indexPage)
+	r.HandleFunc("/v1/prices/{market}/{pair}", ArrrPrice).Methods("GET").Queries("symbols", "{symbols}")
 	r.HandleFunc("/v1/prices/{market}/{pair}", ArrrPrice).Methods("GET")
 
 	// Bind to a port and pass our router in

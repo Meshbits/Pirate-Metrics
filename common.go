@@ -9,10 +9,13 @@ import (
 	"time"
 )
 
+// time.Now().Unix()
+
 type pirateRates struct {
-	Base   string `json:"base"`
-	Market string `json:"market"`
-	Rates  struct {
+	Timestamp int64  `json:"timestamp"`
+	Base      string `json:"base"`
+	Market    string `json:"market"`
+	Rates     struct {
 		AED float64 `json:"AED"`
 		AFN float64 `json:"AFN"`
 		ALL float64 `json:"ALL"`
@@ -182,6 +185,14 @@ type pirateRates struct {
 		ZMW float64 `json:"ZMW"`
 		ZWL float64 `json:"ZWL"`
 	} `json:"rates"`
+}
+
+type queriedRates struct {
+	// Success   bool        `json:"success"`
+	Timestamp int64       `json:"timestamp"`
+	Base      string      `json:"base"`
+	Market    string      `json:"market"`
+	Rates     interface{} `json:"rates"`
 }
 
 // APIQuery holds the URL and params which is sent to APICall to query rates

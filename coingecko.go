@@ -8,8 +8,9 @@ import (
 var BTC_RATES bitcoinRates
 
 type bitcoinRates struct {
-	Base  string `json:"base"`
-	Rates struct {
+	Timestamp int64  `json:"timestamp"`
+	Base      string `json:"base"`
+	Rates     struct {
 		AED float64 `json:"AED"`
 		AFN float64 `json:"AFN"`
 		ALL float64 `json:"ALL"`
@@ -194,6 +195,7 @@ func CGeckoBTCAPI() {
 		fmt.Printf("BTC Price (USD): %v\n", result.([]interface{})[0].(map[string]interface{})["current_price"])
 
 		var btc bitcoinRates
+		btc.Timestamp = time.Now().Unix()
 		btc.Base = "USD"
 		btc.Rates.AED = toFixed(FIXER_RATES.Rates.AED*result.([]interface{})[0].(map[string]interface{})["current_price"].(float64), 6)
 		btc.Rates.AFN = toFixed(FIXER_RATES.Rates.AFN*result.([]interface{})[0].(map[string]interface{})["current_price"].(float64), 6)

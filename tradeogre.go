@@ -21,6 +21,7 @@ func ArrrToAPI() {
 		fmt.Printf("ARRR Price (BTC): %v\n", result.(map[string]interface{})["price"].(string))
 
 		var arrr pirateRates
+		arrr.Timestamp = time.Now().Unix()
 		arrrBTC, _ := strconv.ParseFloat(result.(map[string]interface{})["price"].(string), 64)
 		arrr.Base = "ARRR/BTC"
 		arrr.Market = "TradeOgre"
