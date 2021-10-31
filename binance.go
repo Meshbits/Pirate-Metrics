@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"strconv"
 	"sync"
@@ -241,11 +240,11 @@ func KmdBtcBinanceAPI(wg *sync.WaitGroup) {
 		// if answer != nil {
 		// 	log.Printf("Read Write operation failed for BTC_USDT_BINANCE_RATES Rates\n")
 		// }
-		fmt.Println("==========================")
-		fmt.Printf("KMD Price (BTC): %.8f\n", kmdBtcPrice)
-		// fmt.Printf("BTCRates.(ConversionRates).Rates.USD: %.6f\n", BTCRates.(ConversionRates).Rates.USD)
-		fmt.Printf("KMD Price (USD): %.6f\n", kmdUSDPrice)
-		fmt.Println("==========================")
+		// fmt.Println("==========================")
+		// fmt.Printf("KMD Price (BTC): %.8f\n", kmdBtcPrice)
+		// // fmt.Printf("BTCRates.(ConversionRates).Rates.USD: %.6f\n", BTCRates.(ConversionRates).Rates.USD)
+		// fmt.Printf("KMD Price (USD): %.6f\n", kmdUSDPrice)
+		// fmt.Println("==========================")
 
 		var kmd ConversionRates
 		kmd.Timestamp = int64(result.([]interface{})[0].(map[string]interface{})["time"].(float64))
