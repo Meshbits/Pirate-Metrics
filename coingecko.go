@@ -206,7 +206,5 @@ func BtcUsdCoinGeckoAPI(wg *sync.WaitGroup) {
 		sleepSeconds := COINGECKO_SECONDS
 		log.Printf("Updated Bitcoin Rates. Will update again in %v seconds...\n", sleepSeconds)
 		time.Sleep(time.Duration(sleepSeconds) * time.Second)
-
-		// return
 	}
 }

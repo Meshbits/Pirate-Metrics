@@ -215,7 +215,5 @@ func VrscBtcSafeTradeAPI(wg *sync.WaitGroup) {
 		sleepSeconds := SAFETRADE_SECONDS
 		log.Printf("Updated VRSC Rates from SafeTrade for VRSC/BTC pair. Will update again in %v seconds...\n", sleepSeconds)
 		time.Sleep(time.Duration(sleepSeconds) * time.Second)
-
-		// return
 	}
 }

@@ -205,7 +205,5 @@ func ArrrToAPI(wg *sync.WaitGroup) {
 		sleepSeconds := TRADEOGRE_SECONDS
 		log.Printf("Updated Pirate Rates from TradeOgre. Will update again in %v seconds...\n", sleepSeconds)
 		time.Sleep(time.Duration(sleepSeconds) * time.Second)
-
-		// return
 	}
 }

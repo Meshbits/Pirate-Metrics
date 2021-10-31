@@ -206,8 +206,6 @@ func ArrrBtcKcAPI(wg *sync.WaitGroup) {
 		sleepSeconds := KUCOIN_SECONDS
 		log.Printf("Updated Pirate Rates from KuCoin for ARRR/BTC pair. Will update again in %v seconds...\n", sleepSeconds)
 		time.Sleep(time.Duration(sleepSeconds) * time.Second)
-
-		// return
 	}
 }
 
@@ -419,7 +417,5 @@ func ArrrUsdtKcAPI(wg *sync.WaitGroup) {
 		sleepSeconds := KUCOIN_SECONDS
 		log.Printf("Updated Pirate Rates from KuCoin for ARRR/USDT pair. Will update again in %v seconds...\n", sleepSeconds)
 		time.Sleep(time.Duration(sleepSeconds) * time.Second)
-
-		// return
 	}
 }

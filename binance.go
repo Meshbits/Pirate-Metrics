@@ -207,8 +207,6 @@ func BtcUsdtBinanceAPI(wg *sync.WaitGroup) {
 		sleepSeconds := BINANCE_SECONDS
 		log.Printf("Updated BTC Rates from Binance for BTC/USDT pair. Will update again in %v seconds...\n", sleepSeconds)
 		time.Sleep(time.Duration(sleepSeconds) * time.Second)
-
-		return
 	}
 }
 
