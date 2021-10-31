@@ -1,25 +1,18 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"strconv"
+	"sync"
 	"time"
 )
 
 var BTC_USDT_BINANCE_RATES ConversionRates
 var KMD_BTC_BINANCE_RATES ConversionRates
 
-func BtcUsdtBinanceAPI() {
-	if _, ok := MARKETS_AVAILABLE["binance"]; ok {
-		for _, ma := range MARKETS_AVAILABLE["binance"] {
-			if ma != "BTC-USDT" {
-				MARKETS_AVAILABLE["binance"] = append(MARKETS_AVAILABLE["binance"], "BTC-USDT")
-			}
-		}
-	} else {
-		MARKETS_AVAILABLE["binance"] = append(MARKETS_AVAILABLE["binance"], "BTC-USDT")
-	}
-	// Forever loop to keep fetching rates every N seconds
+func BtcUsdtBinanceAPI(wg *sync.WaitGroup) {
+	updateMarketsAvailable("binance", "BTC-USDT", wg)
 	for {
 		url := "https://api.binance.com/api/v3/trades?symbol=BTCUSDT"
 		params := ``
@@ -205,9 +198,19 @@ func BtcUsdtBinanceAPI() {
 		btc.Rates.ZWL = toFixed(FIXER_RATES.Rates.ZWL*price, 6)
 
 		BTC_USDT_BINANCE_RATES = btc
+		// wg.Add(1)
+		// answer := RWRates(&RWRatesQuery{wr: "write", storage: "BTC_USDT_BINANCE_RATES", data: btc, wg: wg})
+		// if answer != nil {
+		// 	log.Printf("Read Write operation failed for BTC_USDT_BINANCE_RATES Rates\n")
+		// }
 		if BTC_PRICE_SOURCE == "Binance" {
 			BTC_RATES = btc
+			// answer = RWRates(&RWRatesQuery{wr: "write", storage: "BTC_RATES", data: btc, wg: wg})
+			// if answer != nil {
+			// 	log.Printf("Read Write operation failed for BTC_RATES Rates\n")
+			// }
 		}
+		// wg.Wait()
 
 		// b, _ := json.Marshal(arrr)
 		// fmt.Println(string(b))
@@ -220,16 +223,8 @@ func BtcUsdtBinanceAPI() {
 	}
 }
 
-func KmdBtcBinanceAPI() {
-	if _, ok := MARKETS_AVAILABLE["binance"]; ok {
-		for _, ma := range MARKETS_AVAILABLE["binance"] {
-			if ma != "KMD-BTC" {
-				MARKETS_AVAILABLE["binance"] = append(MARKETS_AVAILABLE["binance"], "KMD-BTC")
-			}
-		}
-	} else {
-		MARKETS_AVAILABLE["binance"] = append(MARKETS_AVAILABLE["binance"], "KMD-BTC")
-	}
+func KmdBtcBinanceAPI(wg *sync.WaitGroup) {
+	updateMarketsAvailable("binance", "KMD-BTC", wg)
 	// Forever loop to keep fetching rates every N seconds
 	for {
 		url := "https://api.binance.com/api/v3/trades?symbol=KMDBTC"
@@ -241,10 +236,16 @@ func KmdBtcBinanceAPI() {
 		// fmt.Println(result)
 		kmdBtcPrice, _ := strconv.ParseFloat(result.([]interface{})[0].(map[string]interface{})["price"].(string), 64)
 		kmdUSDPrice := kmdBtcPrice * BTC_RATES.Rates.USD
-		// fmt.Println("==========================")
-		// fmt.Printf("KMD Price (BTC): %.8f\n", kmdBtcPrice)
-		// fmt.Printf("KMD Price (USD): %.6f\n", kmdUSDPrice)
-		// fmt.Println("==========================")
+		// BTCRates := RWRates(&RWRatesQuery{wr: "read", storage: "BTC_RATES", wg: wg})
+		// kmdUSDPrice := kmdBtcPrice * BTCRates.(ConversionRates).Rates.USD
+		// if answer != nil {
+		// 	log.Printf("Read Write operation failed for BTC_USDT_BINANCE_RATES Rates\n")
+		// }
+		fmt.Println("==========================")
+		fmt.Printf("KMD Price (BTC): %.8f\n", kmdBtcPrice)
+		// fmt.Printf("BTCRates.(ConversionRates).Rates.USD: %.6f\n", BTCRates.(ConversionRates).Rates.USD)
+		fmt.Printf("KMD Price (USD): %.6f\n", kmdUSDPrice)
+		fmt.Println("==========================")
 
 		var kmd ConversionRates
 		kmd.Timestamp = int64(result.([]interface{})[0].(map[string]interface{})["time"].(float64))

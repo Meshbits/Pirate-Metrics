@@ -3,21 +3,14 @@ package main
 import (
 	"log"
 	"strconv"
+	"sync"
 	"time"
 )
 
 var ARRR_TO_RATES ConversionRates
 
-func ArrrToAPI() {
-	if _, ok := MARKETS_AVAILABLE["tradeogre"]; ok {
-		for _, ma := range MARKETS_AVAILABLE["tradeogre"] {
-			if ma != "ARRR-BTC" {
-				MARKETS_AVAILABLE["tradeogre"] = append(MARKETS_AVAILABLE["tradeogre"], "ARRR-BTC")
-			}
-		}
-	} else {
-		MARKETS_AVAILABLE["tradeogre"] = append(MARKETS_AVAILABLE["tradeogre"], "ARRR-BTC")
-	}
+func ArrrToAPI(wg *sync.WaitGroup) {
+	updateMarketsAvailable("tradeogre", "ARRR-BTC", wg)
 	// Forever loop to keep fetching rates every N seconds
 	for {
 		url := "https://tradeogre.com/api/v1/ticker/BTC-ARRR"

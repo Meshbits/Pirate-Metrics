@@ -3,22 +3,15 @@ package main
 import (
 	"log"
 	"strconv"
+	"sync"
 	"time"
 )
 
 var ARRR_BTC_KC_RATES ConversionRates
 var ARRR_USDT_KC_RATES ConversionRates
 
-func ArrrBtcKcAPI() {
-	if _, ok := MARKETS_AVAILABLE["kucoin"]; ok {
-		for _, ma := range MARKETS_AVAILABLE["kucoin"] {
-			if ma != "ARRR-BTC" {
-				MARKETS_AVAILABLE["kucoin"] = append(MARKETS_AVAILABLE["kucoin"], "ARRR-BTC")
-			}
-		}
-	} else {
-		MARKETS_AVAILABLE["kucoin"] = append(MARKETS_AVAILABLE["kucoin"], "ARRR-BTC")
-	}
+func ArrrBtcKcAPI(wg *sync.WaitGroup) {
+	updateMarketsAvailable("kucoin", "ARRR-BTC", wg)
 	// Forever loop to keep fetching rates every N seconds
 	for {
 		url := "https://api.kucoin.com/api/v1/market/histories?symbol=ARRR-BTC"
@@ -218,16 +211,8 @@ func ArrrBtcKcAPI() {
 	}
 }
 
-func ArrrUsdtKcAPI() {
-	if _, ok := MARKETS_AVAILABLE["kucoin"]; ok {
-		for _, ma := range MARKETS_AVAILABLE["kucoin"] {
-			if ma != "ARRR-USDT" {
-				MARKETS_AVAILABLE["kucoin"] = append(MARKETS_AVAILABLE["kucoin"], "ARRR-USDT")
-			}
-		}
-	} else {
-		MARKETS_AVAILABLE["kucoin"] = append(MARKETS_AVAILABLE["kucoin"], "ARRR-USDT")
-	}
+func ArrrUsdtKcAPI(wg *sync.WaitGroup) {
+	updateMarketsAvailable("kucoin", "ARRR-USDT", wg)
 	// Forever loop to keep fetching rates every N seconds
 	for {
 		url := "https://api.kucoin.com/api/v1/market/histories?symbol=ARRR-USDT"

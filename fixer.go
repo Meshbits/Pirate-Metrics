@@ -2,21 +2,14 @@ package main
 
 import (
 	"log"
+	"sync"
 	"time"
 )
 
 var FIXER_RATES ConversionRates
 
-func fixer(APIToken string) /*(ConversionRates, error)*/ {
-	if _, ok := MARKETS_AVAILABLE["fixer"]; ok {
-		for _, ma := range MARKETS_AVAILABLE["fixer"] {
-			if ma != "USD" {
-				MARKETS_AVAILABLE["fixer"] = append(MARKETS_AVAILABLE["fixer"], "USD")
-			}
-		}
-	} else {
-		MARKETS_AVAILABLE["fixer"] = append(MARKETS_AVAILABLE["fixer"], "USD")
-	}
+func fixer(APIToken string, wg *sync.WaitGroup) /*(ConversionRates, error)*/ {
+	updateMarketsAvailable("fixer", "USD", wg)
 	// Forever loop to keep fetching rates every N seconds
 	for {
 		url := "http://data.fixer.io/api/latest?"

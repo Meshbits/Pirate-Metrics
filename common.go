@@ -6,18 +6,24 @@ import (
 	"io/ioutil"
 	"math"
 	"net/http"
+	"sync"
 	"time"
 )
 
 var BTC_RATES ConversionRates
 
-var BINANCE_SECONDS int = 60 * 2
-var KUCOIN_SECONDS int = 60 * 2
-var TRADEOGRE_SECONDS int = 60
-var SAFETRADE_SECONDS int = 60
-var COINGECKO_SECONDS int = 60 * 2
-var FIXER_SECONDS int = 60 * 60 * 4
-var DISPLAY_RATES_SECONDS int = 30
+var (
+	MARKETS_AVAILABLE     = map[string][]string{}
+	BTC_PRICE_SOURCE      string
+	BINANCE_SECONDS       int = 30
+	KUCOIN_SECONDS        int = 60 * 2
+	TRADEOGRE_SECONDS     int = 60
+	SAFETRADE_SECONDS     int = 60
+	COINGECKO_SECONDS     int = 60 * 2
+	FIXER_SECONDS         int = 60 * 60 * 4
+	DISPLAY_RATES_SECONDS int = 30
+	mutex                 sync.RWMutex
+)
 
 type ConversionRates struct {
 	Success   bool   `json:"success"`
@@ -289,3 +295,49 @@ func toFixed(num float64, precision int) float64 {
 	output := math.Pow(10, float64(precision))
 	return float64(round(num*output)) / output
 }
+
+func updateMarketsAvailable(market, pair string, wg *sync.WaitGroup) {
+	mutex.Lock()
+	if _, ok := MARKETS_AVAILABLE[market]; ok {
+		for _, ma := range MARKETS_AVAILABLE[market] {
+			if ma != pair {
+				MARKETS_AVAILABLE[market] = append(MARKETS_AVAILABLE[market], pair)
+			}
+		}
+	} else {
+		MARKETS_AVAILABLE[market] = append(MARKETS_AVAILABLE[market], pair)
+	}
+	mutex.Unlock()
+	wg.Done()
+}
+
+type RWRatesQuery struct {
+	wr, storage string
+	data        ConversionRates
+	wg          *sync.WaitGroup
+}
+
+// func RWRates(rq *RWRatesQuery) interface{} {
+// 	mutex.Lock()
+// 	switch rq.wr {
+// 	case "write":
+// 		switch rq.storage {
+// 		case "BTC_USDT_BINANCE_RATES":
+// 			BTC_USDT_BINANCE_RATES = rq.data
+// 		case "BTC_RATES":
+// 			BTC_RATES = rq.data
+// 		}
+// 	case "read":
+// 		switch rq.storage {
+// 		case "BTC_USDT_BINANCE_RATES":
+// 			BTC_USDT_BINANCE_RATES = rq.data
+// 		case "BTC_RATES":
+// 			mutex.Unlock()
+// 			rq.wg.Done()
+// 			return BTC_RATES
+// 		}
+// 	}
+// 	mutex.Unlock()
+// 	rq.wg.Done()
+// 	return nil
+// }

@@ -7,14 +7,11 @@ import (
 	"log"
 	"net/http"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/gorilla/mux"
 )
-
-var MARKETS_AVAILABLE = map[string][]string{}
-
-var BTC_PRICE_SOURCE string
 
 func indexPage(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, `<p>For API documentation visit <a href="https://github.com/Meshbits/Pirate-Metrics">Pirate Metrics Repository on Github</a>.</p>`)
@@ -153,24 +150,27 @@ func main() {
 		return
 	}
 
-	go fixer(*fixerAPIToken)
+	var wg sync.WaitGroup
+	wg.Add(8)
+	go fixer(*fixerAPIToken, &wg)
 
 	switch strings.ToLower(*btcPriceSource) {
 	case "binance":
-		go BtcUsdtBinanceAPI()
+		go BtcUsdtBinanceAPI(&wg)
 		BTC_PRICE_SOURCE = "Binance"
 	case "coingecko":
-		go BtcUsdCoinGeckoAPI()
+		go BtcUsdCoinGeckoAPI(&wg)
 		BTC_PRICE_SOURCE = "CoinGecko"
 	}
 
-	go ArrrToAPI()
-	go ArrrBtcKcAPI()
-	go ArrrUsdtKcAPI()
-	go KmdBtcBinanceAPI()
-	go VrscBtcSafeTradeAPI()
+	// go ArrrToAPI(&wg)
+	// go ArrrBtcKcAPI(&wg)
+	// go ArrrUsdtKcAPI(&wg)
+	go KmdBtcBinanceAPI(&wg)
+	// go VrscBtcSafeTradeAPI(&wg)
 
 	go displayRates()
+	wg.Wait()
 
 	r := mux.NewRouter()
 	// Routes consist of a path and a handler function.
@@ -181,9 +181,6 @@ func main() {
 
 	// Bind to a port and pass our router in
 	log.Fatal(http.ListenAndServe(":8000", r))
-
-	// fmt.Scanln()
-
 }
 
 func displayRates() {

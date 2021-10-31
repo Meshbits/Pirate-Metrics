@@ -3,21 +3,14 @@ package main
 import (
 	"fmt"
 	"log"
+	"sync"
 	"time"
 )
 
 var VRSC_BTC_SAFETRADE_RATES ConversionRates
 
-func VrscBtcSafeTradeAPI() {
-	if _, ok := MARKETS_AVAILABLE["safetrade"]; ok {
-		for _, ma := range MARKETS_AVAILABLE["safetrade"] {
-			if ma != "VRSC-BTC" {
-				MARKETS_AVAILABLE["safetrade"] = append(MARKETS_AVAILABLE["safetrade"], "VRSC-BTC")
-			}
-		}
-	} else {
-		MARKETS_AVAILABLE["safetrade"] = append(MARKETS_AVAILABLE["safetrade"], "VRSC-BTC")
-	}
+func VrscBtcSafeTradeAPI(wg *sync.WaitGroup) {
+	updateMarketsAvailable("safetrade", "VRSC-BTC", wg)
 	// Forever loop to keep fetching rates every N seconds
 	for {
 		url := "https://safe.trade/api/v2/peatio/public/markets/vrscbtc/trades"
