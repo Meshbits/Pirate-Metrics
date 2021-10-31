@@ -163,11 +163,11 @@ func main() {
 		BTC_PRICE_SOURCE = "CoinGecko"
 	}
 
-	// go ArrrToAPI(&wg)
-	// go ArrrBtcKcAPI(&wg)
-	// go ArrrUsdtKcAPI(&wg)
+	go ArrrToAPI(&wg)
+	go ArrrBtcKcAPI(&wg)
+	go ArrrUsdtKcAPI(&wg)
 	go KmdBtcBinanceAPI(&wg)
-	// go VrscBtcSafeTradeAPI(&wg)
+	go VrscBtcSafeTradeAPI(&wg)
 
 	go displayRates()
 	wg.Wait()
