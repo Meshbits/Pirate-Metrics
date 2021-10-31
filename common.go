@@ -15,14 +15,14 @@ var BTC_RATES ConversionRates
 var (
 	MARKETS_AVAILABLE     = map[string][]string{}
 	BTC_PRICE_SOURCE      string
-	BINANCE_SECONDS       int = 30
+	BINANCE_SECONDS       int = 60 * 2
 	KUCOIN_SECONDS        int = 60 * 2
 	TRADEOGRE_SECONDS     int = 60
 	SAFETRADE_SECONDS     int = 60
 	COINGECKO_SECONDS     int = 60 * 2
 	FIXER_SECONDS         int = 60 * 60 * 4
 	DISPLAY_RATES_SECONDS int = 30
-	mutex                 sync.RWMutex
+	mutex                 sync.Mutex
 )
 
 type ConversionRates struct {
@@ -310,34 +310,3 @@ func updateMarketsAvailable(market, pair string, wg *sync.WaitGroup) {
 	mutex.Unlock()
 	wg.Done()
 }
-
-type RWRatesQuery struct {
-	wr, storage string
-	data        ConversionRates
-	wg          *sync.WaitGroup
-}
-
-// func RWRates(rq *RWRatesQuery) interface{} {
-// 	mutex.Lock()
-// 	switch rq.wr {
-// 	case "write":
-// 		switch rq.storage {
-// 		case "BTC_USDT_BINANCE_RATES":
-// 			BTC_USDT_BINANCE_RATES = rq.data
-// 		case "BTC_RATES":
-// 			BTC_RATES = rq.data
-// 		}
-// 	case "read":
-// 		switch rq.storage {
-// 		case "BTC_USDT_BINANCE_RATES":
-// 			BTC_USDT_BINANCE_RATES = rq.data
-// 		case "BTC_RATES":
-// 			mutex.Unlock()
-// 			rq.wg.Done()
-// 			return BTC_RATES
-// 		}
-// 	}
-// 	mutex.Unlock()
-// 	rq.wg.Done()
-// 	return nil
-// }

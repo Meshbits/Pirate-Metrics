@@ -151,26 +151,29 @@ func main() {
 	}
 
 	var wg sync.WaitGroup
-	wg.Add(8)
+	wg.Add(1)
 	go fixer(*fixerAPIToken, &wg)
 
 	switch strings.ToLower(*btcPriceSource) {
 	case "binance":
+		wg.Add(1)
 		go BtcUsdtBinanceAPI(&wg)
 		BTC_PRICE_SOURCE = "Binance"
 	case "coingecko":
+		wg.Add(1)
 		go BtcUsdCoinGeckoAPI(&wg)
 		BTC_PRICE_SOURCE = "CoinGecko"
 	}
 
+	wg.Add(5)
 	go ArrrToAPI(&wg)
 	go ArrrBtcKcAPI(&wg)
 	go ArrrUsdtKcAPI(&wg)
 	go KmdBtcBinanceAPI(&wg)
 	go VrscBtcSafeTradeAPI(&wg)
+	wg.Wait()
 
 	go displayRates()
-	wg.Wait()
 
 	r := mux.NewRouter()
 	// Routes consist of a path and a handler function.
@@ -181,6 +184,7 @@ func main() {
 
 	// Bind to a port and pass our router in
 	log.Fatal(http.ListenAndServe(":8000", r))
+
 }
 
 func displayRates() {
