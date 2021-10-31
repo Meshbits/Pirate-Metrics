@@ -21,7 +21,7 @@ func PriceAPI(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	// fmt.Println("mux vars:", vars)
 	// fmt.Println("symbols:", vars["symbols"])
-	fmt.Printf("Market: %v\nPair: %v\n", strings.ToLower(vars["market"]), strings.ToUpper(vars["pair"]))
+	// fmt.Printf("Market: %v\nPair: %v\n", strings.ToLower(vars["market"]), strings.ToUpper(vars["pair"]))
 	var convRates []byte
 	var _convRates ConversionRates
 	switch strings.ToLower(vars["market"]) {
