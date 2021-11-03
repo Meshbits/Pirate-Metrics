@@ -200,7 +200,7 @@ curl -s http://localhost:8000/v1/prices/markets
 
 Output format:
 
-| Key  | Data Type | Info
+| Key  | Data Type |
 | ------------- | ------------- |
 | Market name  | string  |
 | Tickers  | srings array  |
