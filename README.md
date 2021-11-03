@@ -2,6 +2,8 @@
  
 :warning: This code is a work in progress and is subject to change.
 
+If you have any suggestions, requests, improvement ideas, please open an issue on github repo. 
+
 ## Objective
 
 To have an independent price aggregator API which doesn't depend on CoinMarketCap or CoinGecko type services, and instead gets the prices directly from exchanges to process and render for the application use.
