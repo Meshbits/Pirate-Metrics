@@ -21,7 +21,7 @@ func VrscBtcSafeTradeAPI(wg *sync.WaitGroup) {
 		}
 		// fmt.Println(result)
 		resultType := fmt.Sprintf("%T", result)
-		if resultType == "<nil>" {
+		if resultType != "[]interface {}" {
 			// fmt.Println("type is <nil>")
 			// fmt.Println("resultType value:", resultType)
 			// fmt.Printf("xTyle type: %T\n", resultType)
