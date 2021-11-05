@@ -24,9 +24,9 @@ func fixer(APIToken string, wg *sync.WaitGroup) /*(ConversionRates, error)*/ {
 
 		resultType := fmt.Sprintf("%T", result)
 		if resultType != "map[string]interface {}" {
-			// fmt.Println("type is <nil>")
-			// fmt.Println("resultType value:", resultType)
-			// fmt.Printf("xTyle type: %T\n", resultType)
+			fmt.Println("type is not map[string]interface {}")
+			fmt.Println("resultType value:", resultType)
+			fmt.Printf("xTyle type: %T\n", resultType)
 		} else {
 			var fx ConversionRates
 			var baseUSD float64 = 1

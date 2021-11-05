@@ -22,9 +22,9 @@ func VrscBtcSafeTradeAPI(wg *sync.WaitGroup) {
 		// fmt.Println(result)
 		resultType := fmt.Sprintf("%T", result)
 		if resultType != "[]interface {}" {
-			// fmt.Println("type is <nil>")
-			// fmt.Println("resultType value:", resultType)
-			// fmt.Printf("xTyle type: %T\n", resultType)
+			fmt.Println("type is not []interface {}")
+			fmt.Println("resultType value:", resultType)
+			fmt.Printf("xTyle type: %T\n", resultType)
 		} else {
 			vrscBTCPrice := result.([]interface{})[0].(map[string]interface{})["price"].(float64)
 			vrscUSDPrice := vrscBTCPrice * BTC_RATES.Rates.USD

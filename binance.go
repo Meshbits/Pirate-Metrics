@@ -26,9 +26,9 @@ func BtcUsdtBinanceAPI(wg *sync.WaitGroup) {
 
 		resultType := fmt.Sprintf("%T", result)
 		if resultType != "[]interface {}" {
-			// fmt.Println("type is <nil>")
-			// fmt.Println("resultType value:", resultType)
-			// fmt.Printf("xTyle type: %T\n", resultType)
+			fmt.Println("type is not []interface {}")
+			fmt.Println("resultType value:", resultType)
+			fmt.Printf("xTyle type: %T\n", resultType)
 		} else {
 			var btc ConversionRates
 			btc.Timestamp = int64(result.([]interface{})[0].(map[string]interface{})["time"].(float64))
@@ -238,9 +238,9 @@ func KmdBtcBinanceAPI(wg *sync.WaitGroup) {
 
 		resultType := fmt.Sprintf("%T", result)
 		if resultType != "[]interface {}" {
-			// fmt.Println("type is <nil>")
-			// fmt.Println("resultType value:", resultType)
-			// fmt.Printf("xTyle type: %T\n", resultType)
+			fmt.Println("type is not []interface {}")
+			fmt.Println("resultType value:", resultType)
+			fmt.Printf("xTyle type: %T\n", resultType)
 		} else {
 			var kmd ConversionRates
 			kmd.Timestamp = int64(result.([]interface{})[0].(map[string]interface{})["time"].(float64))

@@ -24,9 +24,9 @@ func BtcUsdCoinGeckoAPI(wg *sync.WaitGroup) {
 
 		resultType := fmt.Sprintf("%T", result)
 		if resultType != "[]interface {}" {
-			// fmt.Println("type is <nil>")
-			// fmt.Println("resultType value:", resultType)
-			// fmt.Printf("xTyle type: %T\n", resultType)
+			fmt.Println("type is not []interface {}")
+			fmt.Println("resultType value:", resultType)
+			fmt.Printf("xTyle type: %T\n", resultType)
 		} else {
 			var btc ConversionRates
 			btc.Success = true

@@ -227,7 +227,7 @@ func APICall(q *APIQuery) (string, error) {
 	method := "GET"
 
 	client := &http.Client{
-		Timeout: 30 * time.Second,
+		Timeout: 60 * time.Second,
 	}
 	req, err := http.NewRequest(method, url, nil)
 	req.Header.Set("Content-Type", "application/json")
