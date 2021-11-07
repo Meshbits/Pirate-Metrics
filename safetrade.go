@@ -20,6 +20,7 @@ func VrscBtcSafeTradeAPI(wg *sync.WaitGroup) {
 			log.Printf("Got error fetching SafeTrade VRSC/BTC rates: %v\n", err)
 		}
 		// fmt.Println(result)
+
 		resultType := fmt.Sprintf("%T", result)
 		if resultType != "[]interface {}" {
 			fmt.Println("type is not []interface {}")

@@ -21,8 +21,6 @@ func BtcUsdtBinanceAPI(wg *sync.WaitGroup) {
 			log.Printf("Got error fetching Binance BTC/USDT rates: %v\n", err)
 		}
 		// fmt.Println(result)
-		price, _ := strconv.ParseFloat(result.([]interface{})[0].(map[string]interface{})["price"].(string), 64)
-		log.Printf("BTC Price (USDT): %v\n", price)
 
 		resultType := fmt.Sprintf("%T", result)
 		if resultType != "[]interface {}" {
@@ -30,6 +28,8 @@ func BtcUsdtBinanceAPI(wg *sync.WaitGroup) {
 			fmt.Println("resultType value:", resultType)
 			fmt.Printf("xTyle type: %T\n", resultType)
 		} else {
+			price, _ := strconv.ParseFloat(result.([]interface{})[0].(map[string]interface{})["price"].(string), 64)
+			log.Printf("BTC Price (USDT): %v\n", price)
 			var btc ConversionRates
 			btc.Timestamp = int64(result.([]interface{})[0].(map[string]interface{})["time"].(float64))
 			btc.Base = "USD"
@@ -229,12 +229,6 @@ func KmdBtcBinanceAPI(wg *sync.WaitGroup) {
 			log.Printf("Got error fetching Binance KMD/BTC rates: %v\n", err)
 		}
 		// fmt.Println(result)
-		kmdBtcPrice, _ := strconv.ParseFloat(result.([]interface{})[0].(map[string]interface{})["price"].(string), 64)
-		kmdUSDPrice := kmdBtcPrice * BTC_RATES.Rates.USD
-		// fmt.Println("==========================")
-		// fmt.Printf("KMD Price (BTC): %.8f\n", kmdBtcPrice)
-		// fmt.Printf("KMD Price (USD): %.6f\n", kmdUSDPrice)
-		// fmt.Println("==========================")
 
 		resultType := fmt.Sprintf("%T", result)
 		if resultType != "[]interface {}" {
@@ -242,6 +236,12 @@ func KmdBtcBinanceAPI(wg *sync.WaitGroup) {
 			fmt.Println("resultType value:", resultType)
 			fmt.Printf("xTyle type: %T\n", resultType)
 		} else {
+			kmdBtcPrice, _ := strconv.ParseFloat(result.([]interface{})[0].(map[string]interface{})["price"].(string), 64)
+			kmdUSDPrice := kmdBtcPrice * BTC_RATES.Rates.USD
+			// fmt.Println("==========================")
+			// fmt.Printf("KMD Price (BTC): %.8f\n", kmdBtcPrice)
+			// fmt.Printf("KMD Price (USD): %.6f\n", kmdUSDPrice)
+			// fmt.Println("==========================")
 			var kmd ConversionRates
 			kmd.Timestamp = int64(result.([]interface{})[0].(map[string]interface{})["time"].(float64))
 			kmd.Base = "KMD/BTC"

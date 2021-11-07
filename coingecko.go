@@ -20,7 +20,6 @@ func BtcUsdCoinGeckoAPI(wg *sync.WaitGroup) {
 			log.Printf("Got error fetching Coingecko BTC/USD rates: %v\n", err)
 		}
 		// fmt.Println(result)
-		log.Printf("BTC Price (USD): %v\n", result.([]interface{})[0].(map[string]interface{})["current_price"])
 
 		resultType := fmt.Sprintf("%T", result)
 		if resultType != "[]interface {}" {
@@ -28,6 +27,7 @@ func BtcUsdCoinGeckoAPI(wg *sync.WaitGroup) {
 			fmt.Println("resultType value:", resultType)
 			fmt.Printf("xTyle type: %T\n", resultType)
 		} else {
+			log.Printf("BTC Price (USD): %v\n", result.([]interface{})[0].(map[string]interface{})["current_price"])
 			var btc ConversionRates
 			btc.Success = true
 			btc.Timestamp = time.Now().Unix()

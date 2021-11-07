@@ -21,7 +21,6 @@ func ArrrToAPI(wg *sync.WaitGroup) {
 			log.Printf("Got error fetching TradeOgre ARRR/BTC rates: %v\n", err)
 		}
 		// fmt.Println(result)
-		log.Printf("ARRR Price (BTC): %v\n", result.(map[string]interface{})["price"].(string))
 
 		resultType := fmt.Sprintf("%T", result)
 		if resultType != "map[string]interface {}" {
@@ -29,6 +28,7 @@ func ArrrToAPI(wg *sync.WaitGroup) {
 			fmt.Println("resultType value:", resultType)
 			fmt.Printf("xTyle type: %T\n", resultType)
 		} else {
+			log.Printf("ARRR Price (BTC): %v\n", result.(map[string]interface{})["price"].(string))
 			var arrr ConversionRates
 			arrr.Success = true
 			arrr.Timestamp = time.Now().Unix()
