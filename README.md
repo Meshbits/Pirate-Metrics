@@ -197,7 +197,7 @@ I have not yet made it optional to enable/disable specific Market or Tickers, bu
 
 
 ```shell
-curl -s http://localhost:8000/v1/prices/markets
+curl -s http://localhost:8000/v1/price/markets
 ```
 
 Output format:
@@ -235,7 +235,7 @@ JSON output:
 ### Getting data for selected market and ticker
 
 ```shell
-curl -s http://localhost:8000/v1/prices/tradeogre/arrr-btc
+curl -s http://localhost:8000/v1/price/tradeogre/arrr-btc
 ```
 
 Output format:
@@ -437,13 +437,13 @@ JSON output:
 For Fixer USD API command would be:
 
 ```shell
-curl -s http://localhost:8000/v1/prices/fixer/usd
+curl -s http://localhost:8000/v1/price/fixer/usd
 ```
 
 For VRSC/BTC from SafeTrade:
 
 ```shell
-curl -s http://localhost:8000/v1/prices/safetrade/vrsc-btc
+curl -s http://localhost:8000/v1/price/safetrade/vrsc-btc
 ```
 
 ### Query only specific prices
@@ -453,7 +453,7 @@ You can use `symbol` API parameter to query just the specific rates from API.
 For example, if you'd like to only get exchange rates for USD, EUR, NZD, INR and BTC, you will need to supply the national currency symbols as following (with no spaces)
 
 ```shell
-curl -s http://localhost:8000/v1/prices/tradeogre/arrr-btc?symbols=USD,EUR,NZD,INR,BTC
+curl -s http://localhost:8000/v1/price/tradeogre/arrr-btc?symbols=USD,EUR,NZD,INR,BTC
 ```
 
 It will output like this:
@@ -486,7 +486,7 @@ It will output like this:
 For single price query like EUR it will be like this:
 
 ```shell
-curl -s curl -s http://localhost:8000/v1/prices/safetrade/vrsc-btc\?symbols\=EUR
+curl -s curl -s http://localhost:8000/v1/price/safetrade/vrsc-btc\?symbols\=EUR
 ```
 
 ```json

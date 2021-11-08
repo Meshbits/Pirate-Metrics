@@ -178,9 +178,9 @@ func main() {
 	r := mux.NewRouter()
 	// Routes consist of a path and a handler function.
 	r.HandleFunc("/", indexPage)
-	r.HandleFunc("/v1/prices/{market}/{pair}", PriceAPI).Methods("GET").Queries("symbols", "{symbols}")
-	r.HandleFunc("/v1/prices/{market}/{pair}", PriceAPI).Methods("GET")
-	r.HandleFunc("/v1/prices/markets", Markets).Methods("GET")
+	r.HandleFunc("/v1/price/{market}/{pair}", PriceAPI).Methods("GET").Queries("symbols", "{symbols}")
+	r.HandleFunc("/v1/price/{market}/{pair}", PriceAPI).Methods("GET")
+	r.HandleFunc("/v1/price/markets", Markets).Methods("GET")
 
 	// Bind to a port and pass our router in
 	log.Fatal(http.ListenAndServe(":8000", r))
