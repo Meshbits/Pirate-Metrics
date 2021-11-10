@@ -228,7 +228,6 @@ func ArrrUsdtKcAPI(wg *sync.WaitGroup) {
 			log.Printf("Got error fetching KuCoin ARRR/USDT rates: %v\n", err)
 		}
 		// fmt.Println(result)
-		log.Printf("ARRR Price (USDT): %v\n", result.(map[string]interface{})["data"].([]interface{})[0].(map[string]interface{})["price"])
 
 		resultType := fmt.Sprintf("%T", result)
 		if resultType != "map[string]interface {}" {
@@ -236,6 +235,7 @@ func ArrrUsdtKcAPI(wg *sync.WaitGroup) {
 			fmt.Println("resultType value:", resultType)
 			fmt.Printf("xTyle type: %T\n", resultType)
 		} else {
+			log.Printf("ARRR Price (USDT): %v\n", result.(map[string]interface{})["data"].([]interface{})[0].(map[string]interface{})["price"])
 			var arrrUsdtKc ConversionRates
 			arrrUsdtKc.Success = true
 			arrrUsdtKc.Timestamp = time.Now().Unix()
