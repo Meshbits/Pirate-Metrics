@@ -65,6 +65,8 @@ func PriceAPI(w http.ResponseWriter, r *http.Request) {
 			_convRates = BTC_USDT_BINANCE_RATES
 		case "KMD-BTC":
 			_convRates = KMD_BTC_BINANCE_RATES
+		case "ZEC-BTC":
+			_convRates = ZEC_BTC_BINANCE_RATES
 		default:
 			w.Header().Set("Content-Type", "application/json")
 			fmt.Fprintf(w, `{"success": false,"error": "Pair not found. Please try another pair"}`)
