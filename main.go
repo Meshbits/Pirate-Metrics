@@ -165,11 +165,12 @@ func main() {
 		BTC_PRICE_SOURCE = "CoinGecko"
 	}
 
-	wg.Add(5)
+	wg.Add(6)
 	go ArrrToAPI(&wg)
 	go ArrrBtcKcAPI(&wg)
 	go ArrrUsdtKcAPI(&wg)
 	go KmdBtcBinanceAPI(&wg)
+	go ZecBtcBinanceAPI(&wg)
 	go VrscBtcSafeTradeAPI(&wg)
 	wg.Wait()
 
@@ -202,6 +203,8 @@ func displayRates() {
 		log.Printf("KuCoin-ARRR/USDT: ARRR (USD): %.6f\n", ARRR_USDT_KC_RATES.Rates.USD)
 		log.Printf("Binance-KMD/BTC: KMD (BTC) %.8f\n", KMD_BTC_BINANCE_RATES.Rates.BTC)
 		log.Printf("Binance-KMD/BTC: KMD (USD) %.6f\n", KMD_BTC_BINANCE_RATES.Rates.USD)
+		log.Printf("Binance-ZEC/BTC: ZEC (BTC) %.8f\n", ZEC_BTC_BINANCE_RATES.Rates.BTC)
+		log.Printf("Binance-ZEC/BTC: ZEC (USD) %.6f\n", ZEC_BTC_BINANCE_RATES.Rates.USD)
 		log.Printf("SafeTrade-VRSC/BTC: VRSC (BTC) %.8f\n", VRSC_BTC_SAFETRADE_RATES.Rates.BTC)
 		log.Printf("SafeTrade-VRSC/BTC: VRSC (USD) %.6f\n", VRSC_BTC_SAFETRADE_RATES.Rates.USD)
 		log.Println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
