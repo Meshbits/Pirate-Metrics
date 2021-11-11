@@ -632,7 +632,7 @@ func ZecBtcBinanceAPI(wg *sync.WaitGroup) {
 		}
 
 		sleepSeconds := BINANCE_SECONDS
-		log.Printf("Updated KMD Rates from Binance for KMD/BTC pair. Will update again in %v seconds...\n", sleepSeconds)
+		log.Printf("Updated ZEC Rates from Binance for ZEC/BTC pair. Will update again in %v seconds...\n", sleepSeconds)
 		time.Sleep(time.Duration(sleepSeconds) * time.Second)
 	}
 }
