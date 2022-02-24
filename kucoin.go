@@ -30,7 +30,6 @@ func ArrrBtcKcAPI(wg *sync.WaitGroup) {
 		// fmt.Println(result)
 
 		resultType := fmt.Sprintf("%T", result)
-		fmt.Println("ARRR Price (BTC) - KuCoin - resultType:", resultType)
 		if resultType != "map[string]interface {}" {
 			fmt.Println("type is map[string]interface {}")
 			fmt.Println("resultType value:", resultType)
@@ -243,7 +242,6 @@ func ArrrUsdtKcAPI(wg *sync.WaitGroup) {
 		// fmt.Println(result)
 
 		resultType := fmt.Sprintf("%T", result)
-		fmt.Println("ARRR Price (USDT) - KuCoin - resultType:", resultType)
 		if resultType != "map[string]interface {}" {
 			fmt.Println("type is not map[string]interface {}")
 			fmt.Println("resultType value:", resultType)
