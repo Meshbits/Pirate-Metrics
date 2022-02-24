@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"pirate-metrics/utils"
 	"sync"
 	"time"
 )
@@ -10,6 +11,11 @@ import (
 var FIXER_RATES ConversionRates
 
 func fixer(APIToken string, wg *sync.WaitGroup) /*(ConversionRates, error)*/ {
+	defer func() {
+		if r := recover(); r != nil {
+			utils.Log.Println("Recovered in fixer", r)
+		}
+	}()
 	updateMarketsAvailable("fixer", "USD", wg)
 	// Forever loop to keep fetching rates every N seconds
 	for {

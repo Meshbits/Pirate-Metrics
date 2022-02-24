@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"pirate-metrics/utils"
 	"strconv"
 	"sync"
 	"time"
@@ -13,6 +14,11 @@ var KMD_BTC_BINANCE_RATES ConversionRates
 var ZEC_BTC_BINANCE_RATES ConversionRates
 
 func BtcUsdtBinanceAPI(wg *sync.WaitGroup) {
+	defer func() {
+		if r := recover(); r != nil {
+			utils.Log.Println("Recovered in BtcUsdtBinanceAPI", r)
+		}
+	}()
 	updateMarketsAvailable("binance", "BTC-USDT", wg)
 	for {
 		url := "https://api.binance.com/api/v3/trades?symbol=BTCUSDT"
@@ -220,6 +226,11 @@ func BtcUsdtBinanceAPI(wg *sync.WaitGroup) {
 }
 
 func KmdBtcBinanceAPI(wg *sync.WaitGroup) {
+	defer func() {
+		if r := recover(); r != nil {
+			utils.Log.Println("Recovered in KmdBtcBinanceAPI", r)
+		}
+	}()
 	updateMarketsAvailable("binance", "KMD-BTC", wg)
 	// Forever loop to keep fetching rates every N seconds
 	for {
@@ -429,6 +440,11 @@ func KmdBtcBinanceAPI(wg *sync.WaitGroup) {
 }
 
 func ZecBtcBinanceAPI(wg *sync.WaitGroup) {
+	defer func() {
+		if r := recover(); r != nil {
+			utils.Log.Println("Recovered in ZecBtcBinanceAPI", r)
+		}
+	}()
 	updateMarketsAvailable("binance", "ZEC-BTC", wg)
 	// Forever loop to keep fetching rates every N seconds
 	for {

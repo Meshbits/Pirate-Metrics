@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"pirate-metrics/utils"
 	"sync"
 	"time"
 )
@@ -10,6 +11,11 @@ import (
 var BTC_COINGECKO_RATES ConversionRates
 
 func BtcUsdCoinGeckoAPI(wg *sync.WaitGroup) {
+	defer func() {
+		if r := recover(); r != nil {
+			utils.Log.Println("Recovered in BtcUsdCoinGeckoAPI", r)
+		}
+	}()
 	updateMarketsAvailable("coingecko", "BTC-USD", wg)
 	// Forever loop to keep fetching rates every N seconds
 	for {

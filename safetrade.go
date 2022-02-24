@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"pirate-metrics/utils"
 	"sync"
 	"time"
 )
@@ -10,6 +11,11 @@ import (
 var VRSC_BTC_SAFETRADE_RATES ConversionRates
 
 func VrscBtcSafeTradeAPI(wg *sync.WaitGroup) {
+	defer func() {
+		if r := recover(); r != nil {
+			utils.Log.Println("Recovered in VrscBtcSafeTradeAPI", r)
+		}
+	}()
 	updateMarketsAvailable("safetrade", "VRSC-BTC", wg)
 	// Forever loop to keep fetching rates every N seconds
 	for {

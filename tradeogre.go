@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"pirate-metrics/utils"
 	"strconv"
 	"sync"
 	"time"
@@ -11,6 +12,11 @@ import (
 var ARRR_TO_RATES ConversionRates
 
 func ArrrToAPI(wg *sync.WaitGroup) {
+	defer func() {
+		if r := recover(); r != nil {
+			utils.Log.Println("Recovered in ArrrToAPI", r)
+		}
+	}()
 	updateMarketsAvailable("tradeogre", "ARRR-BTC", wg)
 	// Forever loop to keep fetching rates every N seconds
 	for {

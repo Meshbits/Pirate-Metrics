@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"pirate-metrics/utils"
 	"strconv"
 	"sync"
 	"time"
@@ -12,6 +13,11 @@ var ARRR_BTC_KC_RATES ConversionRates
 var ARRR_USDT_KC_RATES ConversionRates
 
 func ArrrBtcKcAPI(wg *sync.WaitGroup) {
+	defer func() {
+		if r := recover(); r != nil {
+			utils.Log.Println("Recovered in ArrrBtcKcAPI", r)
+		}
+	}()
 	updateMarketsAvailable("kucoin", "ARRR-BTC", wg)
 	// Forever loop to keep fetching rates every N seconds
 	for {
@@ -30,6 +36,7 @@ func ArrrBtcKcAPI(wg *sync.WaitGroup) {
 			fmt.Println("resultType value:", resultType)
 			fmt.Printf("xTyle type: %T\n", resultType)
 		} else {
+			fmt.Println(result)
 			log.Printf("ARRR Price (BTC): %v\n", result.(map[string]interface{})["data"].([]interface{})[0].(map[string]interface{})["price"])
 			var arrr ConversionRates
 			arrr.Success = true
@@ -219,6 +226,11 @@ func ArrrBtcKcAPI(wg *sync.WaitGroup) {
 }
 
 func ArrrUsdtKcAPI(wg *sync.WaitGroup) {
+	defer func() {
+		if r := recover(); r != nil {
+			utils.Log.Println("Recovered in ArrrUsdtKcAPI", r)
+		}
+	}()
 	updateMarketsAvailable("kucoin", "ARRR-USDT", wg)
 	// Forever loop to keep fetching rates every N seconds
 	for {
