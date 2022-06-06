@@ -169,7 +169,7 @@ func main() {
 		BTC_PRICE_SOURCE = "CoinGecko"
 	}
 
-	wg.Add(6)
+	wg.Add(7)
 	go ArrrToAPI(&wg)
 	go ArrrBtcKcAPI(&wg)
 	go ArrrUsdtKcAPI(&wg)
