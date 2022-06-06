@@ -65,8 +65,10 @@ func PriceAPI(w http.ResponseWriter, r *http.Request) {
 			_convRates = BTC_USDT_BINANCE_RATES
 		case "KMD-BTC":
 			_convRates = KMD_BTC_BINANCE_RATES
-		case "ZEC-BTC":
-			_convRates = ZEC_BTC_BINANCE_RATES
+		case "ETH-BTC":
+			_convRates = ETH_BTC_BINANCE_RATES
+		case "DOT-BTC":
+			_convRates = DOT_BTC_BINANCE_RATES
 		default:
 			w.Header().Set("Content-Type", "application/json")
 			fmt.Fprintf(w, `{"success": false,"error": "Pair not found. Please try another pair"}`)
@@ -172,7 +174,8 @@ func main() {
 	go ArrrBtcKcAPI(&wg)
 	go ArrrUsdtKcAPI(&wg)
 	go KmdBtcBinanceAPI(&wg)
-	go ZecBtcBinanceAPI(&wg)
+	go EthBtcBinanceAPI(&wg)
+	go DotBtcBinanceAPI(&wg)
 	go VrscBtcSafeTradeAPI(&wg)
 	wg.Wait()
 
@@ -205,8 +208,10 @@ func displayRates() {
 		log.Printf("KuCoin-ARRR/USDT: ARRR (USD): %.6f\n", ARRR_USDT_KC_RATES.Rates.USD)
 		log.Printf("Binance-KMD/BTC: KMD (BTC) %.8f\n", KMD_BTC_BINANCE_RATES.Rates.BTC)
 		log.Printf("Binance-KMD/BTC: KMD (USD) %.6f\n", KMD_BTC_BINANCE_RATES.Rates.USD)
-		log.Printf("Binance-ZEC/BTC: ZEC (BTC) %.8f\n", ZEC_BTC_BINANCE_RATES.Rates.BTC)
-		log.Printf("Binance-ZEC/BTC: ZEC (USD) %.6f\n", ZEC_BTC_BINANCE_RATES.Rates.USD)
+		log.Printf("Binance-ETH/BTC: ETH (BTC) %.8f\n", ETH_BTC_BINANCE_RATES.Rates.BTC)
+		log.Printf("Binance-ETH/BTC: ETH (USD) %.6f\n", ETH_BTC_BINANCE_RATES.Rates.USD)
+		log.Printf("Binance-DOT/BTC: DOT (BTC) %.8f\n", DOT_BTC_BINANCE_RATES.Rates.BTC)
+		log.Printf("Binance-DOT/BTC: DOT (USD) %.6f\n", DOT_BTC_BINANCE_RATES.Rates.USD)
 		log.Printf("SafeTrade-VRSC/BTC: VRSC (BTC) %.8f\n", VRSC_BTC_SAFETRADE_RATES.Rates.BTC)
 		log.Printf("SafeTrade-VRSC/BTC: VRSC (USD) %.6f\n", VRSC_BTC_SAFETRADE_RATES.Rates.USD)
 		log.Println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
