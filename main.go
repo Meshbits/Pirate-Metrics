@@ -88,15 +88,15 @@ func PriceAPI(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprintf(w, `{"success": false,"error": "Pair not found. Please try another pair"}`)
 			return
 		}
-	case "safetrade":
-		switch strings.ToUpper(vars["pair"]) {
-		case "VRSC-BTC":
-			_convRates = VRSC_BTC_SAFETRADE_RATES
-		default:
-			w.Header().Set("Content-Type", "application/json")
-			fmt.Fprintf(w, `{"success": false,"error": "Pair not found. Please try another pair"}`)
-			return
-		}
+	// case "safetrade":
+	// 	switch strings.ToUpper(vars["pair"]) {
+	// 	case "VRSC-BTC":
+	// 		_convRates = VRSC_BTC_SAFETRADE_RATES
+	// 	default:
+	// 		w.Header().Set("Content-Type", "application/json")
+	// 		fmt.Fprintf(w, `{"success": false,"error": "Pair not found. Please try another pair"}`)
+	// 		return
+	// 	}
 	default:
 		w.Header().Set("Content-Type", "application/json")
 		fmt.Fprintf(w, `{"success": false,"error": "Market not found. Please try another market"}`)
@@ -169,14 +169,14 @@ func main() {
 		BTC_PRICE_SOURCE = "CoinGecko"
 	}
 
-	wg.Add(7)
+	wg.Add(6)
 	go ArrrToAPI(&wg)
 	go ArrrBtcKcAPI(&wg)
 	go ArrrUsdtKcAPI(&wg)
 	go KmdBtcBinanceAPI(&wg)
 	go EthBtcBinanceAPI(&wg)
 	go DotBtcBinanceAPI(&wg)
-	go VrscBtcSafeTradeAPI(&wg)
+	// go VrscBtcSafeTradeAPI(&wg)
 	wg.Wait()
 
 	go displayRates()
@@ -212,8 +212,8 @@ func displayRates() {
 		log.Printf("Binance-ETH/BTC: ETH (USD) %.6f\n", ETH_BTC_BINANCE_RATES.Rates.USD)
 		log.Printf("Binance-DOT/BTC: DOT (BTC) %.8f\n", DOT_BTC_BINANCE_RATES.Rates.BTC)
 		log.Printf("Binance-DOT/BTC: DOT (USD) %.6f\n", DOT_BTC_BINANCE_RATES.Rates.USD)
-		log.Printf("SafeTrade-VRSC/BTC: VRSC (BTC) %.8f\n", VRSC_BTC_SAFETRADE_RATES.Rates.BTC)
-		log.Printf("SafeTrade-VRSC/BTC: VRSC (USD) %.6f\n", VRSC_BTC_SAFETRADE_RATES.Rates.USD)
+		// log.Printf("SafeTrade-VRSC/BTC: VRSC (BTC) %.8f\n", VRSC_BTC_SAFETRADE_RATES.Rates.BTC)
+		// log.Printf("SafeTrade-VRSC/BTC: VRSC (USD) %.6f\n", VRSC_BTC_SAFETRADE_RATES.Rates.USD)
 		log.Println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
 		sleepSeconds := DISPLAY_RATES_SECONDS
